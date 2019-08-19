@@ -9,7 +9,7 @@
 int execute(char **args)
 {
 	pid_t child;
-	int status = 0;
+	int i, status = 0;
 
 	child = fork();
 	if (child == -1)
@@ -24,5 +24,10 @@ int execute(char **args)
 	}
 	else
 		wait(&status);
+
+        for (i = 0; args[i] != NULL; i++)
+                free(args[i]);
+	free(args);
+
 	return (EXIT_SUCCESS);
 }
