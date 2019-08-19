@@ -1,7 +1,8 @@
 #ifndef SHELL_H
 #define SHELL_H
 #include <stdio.h>
-#include <stlib.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 /* command execution functions */
 int execute(char **args);

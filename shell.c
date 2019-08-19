@@ -14,7 +14,7 @@ int main(int ac, char **av, char **env)
 	char *line = NULL;
         size_t len = 0;
 	char **args;
-	char delim = ' ';
+	int i;
 
 	(void) ac;
 	(void) av;
@@ -28,7 +28,7 @@ int main(int ac, char **av, char **env)
 			for (i = 0; i < _strlen(line); i++)
 				if (line[i] == '\n')
 					line[i] = '\0';
-			args = strtow(line, delim);
+			args = strtow(line, ' ');
 			execute(args); /*handle exit cases in here ? */
 		}
 	}
