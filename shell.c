@@ -34,5 +34,7 @@ int main(int ac, char **av, char **env)
 			execute(args); /*handle exit cases in here ? */
 		}
 	}
+
+	free(line);
 	return (EXIT_SUCCESS);
 }

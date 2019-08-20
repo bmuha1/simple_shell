@@ -16,7 +16,7 @@ char **strtow(char *str, char c)
 	if (str == NULL || _strlen(str) == 0)
 		return (NULL);
 	strlength = _strlen(str);
-	wordcount = count_words(str);
+	wordcount = count_words(str, c);
 	if (wordcount == 0)
 		return (NULL);
 	words = malloc(sizeof(char *) * (wordcount + 1));
@@ -58,19 +58,19 @@ char **strtow(char *str, char c)
  *
  * Return: The number of words (any characters separated by spaces)
  */
-int count_words(char *str)
+int count_words(char *str, char c)
 {
 	int i;
 	int count = 0, word = 0;
 
 	for (i = 0; str[i] != '\0'; i++)
 	{
-		if (str[i] != ' ' && word == 0)
+		if (str[i] != c && word == 0)
 		{
 			count++;
 			word = 1;
 		}
-		else if (str[i] == ' ')
+		else if (str[i] == c)
 		{
 			word = 0;
 		}
