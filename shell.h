@@ -15,6 +15,11 @@ char *_strstr(char *haystack, const char *needle);
 char *_strchr(char *s, char c);
 
 /* builtin functions and handlers */
+/**
+ * struct cmd_s - used to identify a built-in to execute
+ * @type: an existing built-in function
+ * @exec_built_in: directs to built-in function for execution
+ */
 typedef struct cmd_s
 {
 	char *type;
