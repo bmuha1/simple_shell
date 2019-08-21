@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+extern char **environ;
+
 /* command execution functions */
 int execute(char **args);
 

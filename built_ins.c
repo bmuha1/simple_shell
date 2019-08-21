@@ -1,6 +1,27 @@
 #include "shell.h"
 
 /**
+ * simple_env
+ * @args:list of user input arguments
+ *
+ * Return: On successful execution 0, on failure a nonzero value
+ */
+int simple_env(char **args)
+{
+	int i;
+
+	for (i = 0; environ[i] != NULL; i++)
+	{
+		write(STDOUT_FILENO, environ[i], _strlen(environ[i]));
+		write(STDOUT_FILENO, "\n", 1);
+	}
+	for (i = 0; args[i] != NULL; i++)
+                free(args[i]);
+        free(args);
+	return (EXIT_SUCCESS);
+}
+
+/**
  * _atoi - convert string to integer (taking account of signs in string)
  *
  * @s: string to convert
