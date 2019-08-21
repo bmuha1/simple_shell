@@ -69,7 +69,7 @@ char *_strdup(char *str)
  */
 int _strpbrk(char *s, char accept)
 {
-	int i, j;
+	int i;
 
 	for (i = 0; s[i] != '\0'; i++)
 	{

@@ -14,7 +14,6 @@ int main(int ac, char **av, char **env)
 	char *line = NULL;
 	size_t len = 0;
 	char **args;
-	int i;
 
 	(void) ac;
 	(void) av;

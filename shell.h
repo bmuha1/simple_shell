@@ -11,6 +11,7 @@
 /* see if program exists in path directories */
 void search_path(char **args, char **env);
 char *_getenv(const char *name, char **env);
+int only_delims(char *line);
 
 /* command execution functions */
 int execute(char **args);
