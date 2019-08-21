@@ -2,9 +2,8 @@
 #define SHELL_H
 #include <stdio.h>
 #include <stdlib.h>
+#include<sys/wait.h>
 #include <unistd.h>
-
-extern char **environ;
 
 /* command execution functions */
 int execute(char **args);
@@ -15,6 +14,8 @@ int count_words(char *str);
 int _strlen(const char *s);
 char *_strstr(char *haystack, const char *needle);
 char *_strchr(char *s, char c);
+int _strcmp(char *s1, char *s2);
+int _atoi(char *s);
 
 /* builtin functions and handlers */
 /**
@@ -25,13 +26,11 @@ char *_strchr(char *s, char c);
 typedef struct cmd_s
 {
 	char *type;
-	int (*exec_built_in)(char **args);
+	int (*exec_built_in)(char **args, char **env);
 } cmd_t;
-int (*get_built_in(char *cmd))(char **args);
-int simple_exit(char **args);
-int simple_env(char **args);
-int simple_unsetenv(char **args);
-int simple_setenv(char **args);
-int not_built_in(char **args);
+int (*get_built_in(char *cmd))(char **args, char **env);
+int simple_exit(char **args, char **env);
+int simple_env(char **args, char **env);
+int not_built_in(char **args, char **env);
 
 #endif /* SHELL_H */

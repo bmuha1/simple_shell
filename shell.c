@@ -29,7 +29,7 @@ int main(int ac, char **av, char **env)
 				if (line[i] == '\n')
 					line[i] = '\0';
 			args = strtow(line, ' ');
-			if (get_built_in(args[0])(args) == EXIT_SUCCESS)
+			if (get_built_in(args[0])(args, env) == EXIT_SUCCESS)
 				continue;
 			execute(args); /*handle exit cases in here ? */
 		}
