@@ -22,16 +22,15 @@ int main(int ac, char **av, char **env)
 	while (read != -1)
 	{
 		write(STDOUT_FILENO, "#cisfun$ ", 9);
-		if ((read = getline(&line, &len, stdin)) != -1)
-		{
-			for (i = 0; i < _strlen(line); i++)
-				if (line[i] == '\n')
-					line[i] = '\0';
-			args = strtow(line, ' ');
-
-			search_path(args, env);
-			execute(args); /*handle exit cases in here ? */
-		}
+		read = getline(&line, &len, stdin);
+		for (i = 0; i < _strlen(line); i++)
+			if (line[i] == '\n')
+				line[i] = '\0';
+		args = strtow(line, ' ');
+		if (get_built_in(args[0])(args, env) == EXIT_SUCCESS)
+			continue;
+		search_path(args, env);
+		execute(args);
 	}
 
 	free(line);
