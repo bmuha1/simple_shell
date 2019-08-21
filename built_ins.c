@@ -39,6 +39,7 @@ int simple_exit(char **args, char **env)
 			status = 2;
 	}
 	exit(status);
+	printf("HELLO DUDE\n");
 
 	for (i = 0; args[i] != NULL; i++)
 		free(args[i]);

@@ -30,7 +30,7 @@ int main(int ac, char **av, char **env)
 		if (get_built_in(args[0])(args, env) == EXIT_SUCCESS)
 			continue;
 		search_path(args, env);
-		execute(args);
+ 		execute(args);
 	}
 
 	free(line);
