@@ -22,15 +22,17 @@ int main(int ac, char **av, char **env)
 	{
 		write(STDOUT_FILENO, "#cisfun$ ", 9);
 		read = getline(&line, &len, stdin);
+		if (read != -1)
+		{
+			if (only_delims(line))
+				continue;
 
-		if (only_delims(line))
-			continue;
-
-		args = strtow(line, " \t\r\n\v\f");
-		if (get_built_in(args[0])(args, env) == EXIT_SUCCESS)
-			continue;
-		search_path(args, env);
-		execute(args);
+			args = strtow(line, " \t\r\n\v\f");
+			if (get_built_in(args[0])(args, env) == EXIT_SUCCESS)
+				continue;
+			search_path(args, env);
+			execute(args);
+		}
 	}
 
 	free(line);
