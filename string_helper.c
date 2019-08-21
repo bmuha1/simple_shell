@@ -3,12 +3,12 @@
 /**
  * strtow - Split a string into words
  * @str: The string to split
- * @c: The character delimiter
+ * @delim: The character delimiters
  *
  * Return: Pointer to newly allocated space containing an array of words,
  * or NULL if failure
  */
-char **strtow(char *str, char c)
+char **strtow(char *str, char *delim)
 {
 	int i = 0, j = 0, k = 0, wordcount = 0, strlength = 0, tmplength = 0;
 	char **words;
@@ -16,7 +16,7 @@ char **strtow(char *str, char c)
 	if (str == NULL || _strlen(str) == 0)
 		return (NULL);
 	strlength = _strlen(str);
-	wordcount = count_words(str, c);
+	wordcount = count_words(str, delim);
 	if (wordcount == 0)
 		return (NULL);
 	words = malloc(sizeof(char *) * (wordcount + 1));
@@ -24,10 +24,10 @@ char **strtow(char *str, char c)
 		return (NULL);
 	for (i = 0; i < strlength; i++)
 	{
-		if (str[i] != c)
+		if (_strpbrk(delim, str[i]) == 0)
 		{
 			for (k = i, tmplength = 0; str[k] != '\0' &&
-				     str[k] != c; k++)
+				     _strpbrk(delim, str[k]) == 0; k++)
 				tmplength++;
 			words[j] = malloc(sizeof(char) * (tmplength + 1));
 			if (words[j] == NULL)
@@ -38,7 +38,7 @@ char **strtow(char *str, char c)
 				return (NULL);
 			}
 			k = 0;
-			while (str[i] != '\0' && str[i] != c)
+			while (str[i] != '\0' && _strpbrk(delim, str[i]) == 0)
 			{
 				words[j][k] = str[i];
 				i++;
@@ -55,23 +55,23 @@ char **strtow(char *str, char c)
 /**
  * count_words - Count the number of words in a string
  * @str: The string
- * @c: The character delimiter
+ * @delim: The character delimiters
  *
  * Return: The number of words (any characters separated by spaces)
  */
-int count_words(char *str, char c)
+int count_words(char *str, char *delim)
 {
 	int i;
 	int count = 0, word = 0;
 
 	for (i = 0; str[i] != '\0'; i++)
 	{
-		if (str[i] != c && word == 0)
+		if (_strpbrk(delim, str[i]) == 0 && word == 0)
 		{
 			count++;
 			word = 1;
 		}
-		else if (str[i] == c)
+		else if (_strpbrk(delim, str[i]) == 1)
 		{
 			word = 0;
 		}

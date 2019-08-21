@@ -24,11 +24,10 @@ int main(int ac, char **av, char **env)
 		write(STDOUT_FILENO, "#cisfun$ ", 9);
 		if ((read = getline(&line, &len, stdin)) != -1)
 		{
-			for (i = 0; i < _strlen(line); i++)
-				if (line[i] == '\n')
-					line[i] = '\0';
-			args = strtow(line, ' ');
+			if (only_delims(line))
+				continue;
 
+			args = strtow(line, " \t\r\n\v\f");
 			search_path(args, env);
 			execute(args); /*handle exit cases in here ? */
 		}
@@ -36,4 +35,30 @@ int main(int ac, char **av, char **env)
 
 	free(line);
 	return (EXIT_SUCCESS);
+}
+
+/**
+ * only_delims - Check if line consists of only delimiters
+ * @line: The line to check
+ *
+ * Return: 1 if true, 0 if false
+ */
+int only_delims(char *line)
+{
+	int i, j, delim_found;
+	char delim[] = " \t\r\n\v\f";
+
+	for (i = 0; line[i] != '\0'; i++)
+	{
+		delim_found = 0;
+		for (j = 0; delim[j] != '\0'; j++)
+		{
+			if (line[i] == delim[j])
+				delim_found = 1;
+		}
+		if (!delim_found)
+			return (0);
+	}
+
+	return (1);
 }
