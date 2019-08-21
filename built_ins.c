@@ -6,13 +6,13 @@
  *
  * Return: On successful execution 0, on failure a nonzero value
  */
-int simple_env(char **args)
+int simple_env(char **args, char **env)
 {
 	int i;
 
-	for (i = 0; environ[i] != NULL; i++)
+	for (i = 0; env[i] != NULL; i++)
 	{
-		write(STDOUT_FILENO, environ[i], _strlen(environ[i]));
+		write(STDOUT_FILENO, env[i], _strlen(env[i]));
 		write(STDOUT_FILENO, "\n", 1);
 	}
 	for (i = 0; args[i] != NULL; i++)
@@ -22,38 +22,15 @@ int simple_env(char **args)
 }
 
 /**
- * _atoi - convert string to integer (taking account of signs in string)
- *
- * @s: string to convert
- * Return: converted integer value
- *
- */
-int _atoi(char *s)
-{
-	int result = 0;
-	int sign = -1;
-	int i = 0;
-
-	for (; s[i] != '\0' && (s[i] < '0' || s[i] > '9'); i++)
-	{
-		if (s[i] == '-')
-			sign *= -1;
-	}
-	for (; s[i] != '\0' && (s[i] >= '0' && s[i] <= '9'); i++)
-		result = (result * 10) - (s[i] - '0');
-	result *= sign;
-	return (result);
-}
-
-/**
  * simple_exit - cause a termination of simple shell
  * @args: list of user input arguments
  *
  * Return: On successful execution 0, on failure a status value
  */
-int simple_exit(char **args)
+int simple_exit(char **args, char **env)
 {
 	int i, status;
+	(void) env;
 
 	if (args[1] != NULL)
 	{
@@ -75,9 +52,10 @@ int simple_exit(char **args)
  *
  * Return: Always returns EXIT_FAILURE
  */
-int not_built_in(char **args)
+int not_built_in(char **args, char **env)
 {
 	(void) args;
+	(void) env;
 
 	return (EXIT_FAILURE);
 }
