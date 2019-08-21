@@ -59,3 +59,23 @@ char *_strdup(char *str)
 
 	return (dup);
 }
+
+/**
+ * _strpbrk - Search a string for a character
+ * @s: The string to search
+ * @accept: The character to search for
+ *
+ * Return: 1 if found, 0 otherwise
+ */
+int _strpbrk(char *s, char accept)
+{
+	int i, j;
+
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		if (s[i] == accept)
+			return (1);
+	}
+
+	return (0);
+}

@@ -15,8 +15,8 @@ void search_path(char **args, char **env)
 	struct stat st;
 
 	tmp = _getenv("PATH", env);
-	path = strtow(tmp, '=');
-	path2 = strtow(path[1], ':');
+	path = strtow(tmp, "=");
+	path2 = strtow(path[1], ":");
 
 	for (i = 0; path2[i] != NULL; i++)
 	{

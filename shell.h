@@ -16,8 +16,8 @@ char *_getenv(const char *name, char **env);
 int execute(char **args);
 
 /* string functions */
-char **strtow(char *str, char c);
-int count_words(char *str, char c);
+char **strtow(char *str, char *delim);
+int count_words(char *str, char *delim);
 int _strlen(const char *s);
 char *_strstr(char *haystack, const char *needle);
 char *_strchr(char *s, char c);
@@ -25,6 +25,7 @@ int _strcmp(char *s1, char *s2);
 int _atoi(char *s);
 char *str_concat(char *s1, char *s2);
 char *_strdup(char *str);
+int _strpbrk(char *s, char accept);
 
 /* builtin functions and handlers */
 /**
