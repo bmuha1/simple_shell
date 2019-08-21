@@ -16,17 +16,17 @@ int execute(char **args)
 		exit(98);
 	else if (child == 0)
 	{
-		     if(execve(args[0], args, NULL) == -1)
-		     {
-			     perror("Can not execute");
-			     exit(EXIT_FAILURE);
-		     }
+		if (execve(args[0], args, NULL) == -1)
+		{
+			perror("Can not execute");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
 		wait(&status);
 
-        for (i = 0; args[i] != NULL; i++)
-                free(args[i]);
+	for (i = 0; args[i] != NULL; i++)
+		free(args[i]);
 	free(args);
 
 	return (EXIT_SUCCESS);

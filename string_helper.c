@@ -55,6 +55,7 @@ char **strtow(char *str, char c)
 /**
  * count_words - Count the number of words in a string
  * @str: The string
+ * @c: The character delimiter
  *
  * Return: The number of words (any characters separated by spaces)
  */
