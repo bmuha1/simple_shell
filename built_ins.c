@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * simple_env
+ * simple_env - prints the current enviroment variable values
  * @args:list of user input arguments
  *
  * Return: On successful execution 0, on failure a nonzero value
@@ -16,8 +16,8 @@ int simple_env(char **args)
 		write(STDOUT_FILENO, "\n", 1);
 	}
 	for (i = 0; args[i] != NULL; i++)
-                free(args[i]);
-        free(args);
+		free(args[i]);
+	free(args);
 	return (EXIT_SUCCESS);
 }
 
