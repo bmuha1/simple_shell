@@ -38,11 +38,11 @@ int simple_exit(char **args, char **env)
 		if ((status < 0) || (status > 255))
 			status = 2;
 	}
-	exit(status);
 
 	for (i = 0; args[i] != NULL; i++)
 		free(args[i]);
 	free(args);
+	exit(status);
 	return (EXIT_SUCCESS);
 }
 

@@ -28,6 +28,7 @@ int main(int ac, char **av, char **env)
 				continue;
 
 			args = strtow(line, " \t\r\n\v\f");
+			free(line);
 			if (get_built_in(args[0])(args, env) == EXIT_SUCCESS)
 				continue;
 			search_path(args, env);
@@ -35,7 +36,6 @@ int main(int ac, char **av, char **env)
 		}
 	}
 
-	free(line);
 	return (EXIT_SUCCESS);
 }
 
