@@ -4,14 +4,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <dirent.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 
+void remove_comments(char *line);
+int only_delims(char *line);
+
 /* see if program exists in path directories */
 void search_path(char **args, char **env);
 char *_getenv(const char *name, char **env);
-int only_delims(char *line);
+
+void replace_dollars(char **args, char **env);
 
 /* command execution functions */
 int execute(char **args);
@@ -27,6 +33,8 @@ int _atoi(char *s);
 char *str_concat(char *s1, char *s2);
 char *_strdup(char *str);
 int _strpbrk(char *s, char accept);
+void _ntoa_rev(int n, char *s);
+void rev_string(char *s);
 
 /* builtin functions and handlers */
 /**
@@ -42,6 +50,8 @@ typedef struct cmd_s
 int (*get_built_in(char *cmd))(char **args, char **env);
 int simple_exit(char **args, char **env);
 int simple_env(char **args, char **env);
+int simple_help(char **args, char **env);
+int simple_history(char **args, char **env);
 int not_built_in(char **args, char **env);
 
 #endif /* SHELL_H */
