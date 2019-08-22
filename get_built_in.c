@@ -12,6 +12,8 @@ int (*get_built_in(char *cmd))(char **args, char **env)
 	cmd_t command[] = {
 		{"exit", simple_exit},
 		{"env", simple_env},
+		{"help", simple_help},
+		{"history", simple_history},
 		{NULL, not_built_in}
 	};
 
