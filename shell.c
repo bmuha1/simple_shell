@@ -13,7 +13,7 @@ int main(int ac, char **av, char **env)
 	ssize_t read = 0;
 	char *line = NULL;
 	size_t len = 0;
-	char **args;
+	char **args = NULL;
 
 	(void) ac;
 	(void) av;
