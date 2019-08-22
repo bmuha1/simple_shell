@@ -1,6 +1,56 @@
 #include "shell.h"
 
 /**
+ * simple_help - Display helpful information about builtin commands
+ * @args: The list of user input arguments
+ * @env: The environmental variables
+ *
+ * Return: On successful execution 0, on failure a status value
+ */
+int simple_help(char **args, char **env)
+{
+	int i;
+	char output[] = "These shell commands are defined internally.  Type \
+`help' to see this list.\nType `help name' to find out more about the \
+function `name'.\n";
+
+	(void) env;
+
+	write(STDOUT_FILENO, output, _strlen(output));
+	for (i = 0; args[i] != NULL; i++)
+		printf("args[%d] = %s\n", i, args[i]);
+
+	for (i = 0; args[i] != NULL; i++)
+		free(args[i]);
+	free(args);
+
+	return (EXIT_SUCCESS);
+}
+
+/**
+ * simple_history - Display the history list
+ * @args: The list of user input arguments
+ * @env: The environmental variables
+ *
+ * Return: On successful execution 0, on failure a status value
+ */
+int simple_history(char **args, char **env)
+{
+	int i;
+
+	(void) env;
+
+	for (i = 0; args[i] != NULL; i++)
+		free(args[i]);
+	free(args);
+
+	args[0] = _strdup("echo");
+	args[1] = _strdup("$HISTFILE");
+
+	return (EXIT_SUCCESS);
+}
+
+/**
  * simple_env - prints the current enviroment variable values
  * @args:list of user input arguments
  *
