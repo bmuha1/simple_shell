@@ -8,15 +8,18 @@
 void search_path(char **args, char **env)
 {
 	int i;
-	char *tmp;
-	char *tmp2;
-	char **path;
-	char **path2;
+	char *tmp = NULL;
+	char *tmp2 = NULL;
+	char **path = NULL;
+	char **path2 = NULL;
 	struct stat st;
 
 	tmp = _getenv("PATH", env);
-	path = strtow(tmp, '=');
-	path2 = strtow(path[1], ':');
+	path = strtow(tmp, "=");
+	path2 = strtow(path[1], ":");
+
+	if (!path2)
+		return;
 
 	for (i = 0; path2[i] != NULL; i++)
 	{
