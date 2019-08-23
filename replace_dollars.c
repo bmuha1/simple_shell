@@ -7,17 +7,12 @@
  */
 void replace_dollars(char **args, char **env)
 {
-	int i, j, pid;
+	int i, pid;
 	char pid_string[12];
-	char *tmp = NULL;
-	char *env_var = NULL;
-	char *equal_location = NULL;
+	char *tmp = NULL, *env_var = NULL, *equal_location = NULL;
 
 	for (i = 0; i < 12; i++)
 		pid_string[i] = '\0';
-
-	(void) env;
-
 	for (i = 0; args[i] != NULL; i++)
 	{
 		if (args[i][0] == '$')
@@ -30,19 +25,21 @@ void replace_dollars(char **args, char **env)
 				rev_string(pid_string);
 				args[i] = _strdup(pid_string);
 			}
-			else if (args[i][1] == '?')
-			{
-				/* handle $? */
-				for (j = 0; env[j] != NULL; j++)
-					printf("env[%d]: %s\n", j, env[j]);
-			}
 			else
 			{
 				env_var = &args[i][1];
 				tmp = _getenv(env_var, env);
-				equal_location = _strchr(tmp, '=');
-				free(args[i]);
-				args[i] = _strdup(equal_location + 1);
+				if (tmp)
+				{
+					equal_location = _strchr(tmp, '=');
+					free(args[i]);
+					args[i] = _strdup(equal_location + 1);
+				}
+				else
+				{
+					free(args[i]);
+					args[i] = _strdup("");
+				}
 			}
 		}
 	}
