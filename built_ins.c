@@ -12,13 +12,15 @@ int simple_help(char **args, char **env)
 	int i;
 	char output[] = "These shell commands are defined internally.  Type \
 `help' to see this list.\nType `help name' to find out more about the \
-function `name'.\n";
+function `name'.\nalias\ncd\nenv\nexit\nhelp\nsetenv\nunsetenv\n";
 
+
+/* cd exit alias help setenv unsetenv env */
 	(void) env;
-
-	write(STDOUT_FILENO, output, _strlen(output));
-	for (i = 0; args[i] != NULL; i++)
-		printf("args[%d] = %s\n", i, args[i]);
+	if (args[1] == NULL)
+		write(STDOUT_FILENO, output, _strlen(output));
+	else
+		which_help(args[1]);
 
 	for (i = 0; args[i] != NULL; i++)
 		free(args[i]);
