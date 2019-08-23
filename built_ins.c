@@ -10,15 +10,19 @@
 int simple_help(char **args, char **env)
 {
 	int i;
-	char output[] = "These shell commands are defined internally.  Type \
-`help' to see this list.\nType `help name' to find out more about the \
-function `name'.\nalias\ncd\nenv\nexit\nhelp\nsetenv\nunsetenv\n";
+	char output[] = "These shell commands are defined internally.  Type ";
+	char output2[] = "`help' to see this list.\nType `help name' to find ";
+	char output3[] = "out more about the function `name'.\n";
+	char output4[] = "alias\ncd\nenv\nexit\nhelp\nsetenv\nunsetenv\n";
 
-
-/* cd exit alias help setenv unsetenv env */
 	(void) env;
 	if (args[1] == NULL)
+	{
 		write(STDOUT_FILENO, output, _strlen(output));
+		write(STDOUT_FILENO, output2, _strlen(output2));
+		write(STDOUT_FILENO, output3, _strlen(output3));
+		write(STDOUT_FILENO, output4, _strlen(output4));
+	}
 	else
 		which_help(args[1]);
 
