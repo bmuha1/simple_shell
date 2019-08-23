@@ -54,12 +54,13 @@ void search_path(char **args, char **env)
  *
  * Return: Pointer to the environmental variable, or NULL if not found
  */
-char *_getenv(const char *name, char **env)
+char *_getenv(char *name, char **env)
 {
 	int i;
 
 	for (i = 0; env[i] != NULL; i++)
-		if (_strstr(env[i], name) == env[i])
+		if ((_strstr(env[i], name) == env[i]) &&
+		    env[i][_strlen(name)] == '=')
 			return (env[i]);
 
 	return (NULL);
