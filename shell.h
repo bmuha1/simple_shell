@@ -53,6 +53,7 @@ int simple_env(char **args, char **env);
 int simple_history(char **args, char **env);
 int simple_help(char **args, char **env);
 void which_help(char *command);
+int simple_cd(char **args, char **env);
 int not_built_in(char **args, char **env);
 
 #endif /* SHELL_H */

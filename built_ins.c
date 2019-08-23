@@ -54,6 +54,35 @@ int simple_history(char **args, char **env)
 	args[1] = _strdup("$HISTFILE");
 
 	return (EXIT_SUCCESS);
+/**
+ *
+ *
+ *
+ */
+int simple_cd(char **args, char **env)
+{
+	int exec_stat, i;
+	char *input_dir = args[1];
+	char buff[4096]; /* PATH_MAX = 4096 */
+
+	if (input_dir == NULL)
+		exec_stat = chdir(getenv("HOME"));
+	else if (!_strcmp(input_dir, "-"))
+		exec_stat = chdir(getenv("OLDPWD"));
+	else
+		exec_stat = chdir(input_dir);
+
+	if (exec_stat != 0)
+		return (exec_stat);
+	else
+	{
+		setenv("OLDPWD", getenv("PWD"), 1);
+		setenv("PWD", getcwd(buff, 4096), 1);
+	}
+	for (i = 0; args[i] != NULL; i++)
+                free(args[i]);
+        free(args);
+	return (exec_stat);
 }
 
 /**
@@ -92,7 +121,7 @@ int simple_exit(char **args, char **env)
 	{
 		status = _atoi(args[1]);
 		if ((status < 0) || (status > 255))
-			status = 2;
+			return (0);
 	}
 
 	for (i = 0; args[i] != NULL; i++)

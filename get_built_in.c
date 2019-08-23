@@ -14,6 +14,7 @@ int (*get_built_in(char *cmd))(char **args, char **env)
 		{"env", simple_env},
 		{"help", simple_help},
 		{"history", simple_history},
+		{"cd", simple_cd},
 		{NULL, not_built_in}
 	};
 
