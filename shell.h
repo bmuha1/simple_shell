@@ -15,7 +15,7 @@ int only_delims(char *line);
 
 /* see if program exists in path directories */
 void search_path(char **args, char **env);
-char *_getenv(const char *name, char **env);
+char *_getenv(char *name, char **env);
 
 void replace_dollars(char **args, char **env);
 
@@ -50,8 +50,9 @@ typedef struct cmd_s
 int (*get_built_in(char *cmd))(char **args, char **env);
 int simple_exit(char **args, char **env);
 int simple_env(char **args, char **env);
-int simple_help(char **args, char **env);
 int simple_history(char **args, char **env);
+int simple_help(char **args, char **env);
+void which_help(char *command);
 int not_built_in(char **args, char **env);
 
 #endif /* SHELL_H */

@@ -10,25 +10,14 @@
  */
 int main(int ac, char **av, char **env)
 {
+	size_t len = 0;
 	ssize_t read = 0;
 	char *line = NULL;
-	size_t len = 0;
 	char **args = NULL;
-	int fd;
-/*	DIR *dir = opendir(_getenv("HOME", env));
-	char *dirname = dir->ent.d_name; */
-	char *history = ".simple_shell_history";
 
 	(void) ac;
 	(void) av;
-/*	fd = open(str_concat(opendir(_getenv("HOME", env)), history),
-		  O_CREAT | O_APPEND | O_RDWR, 0600); */
-	fd = open(history, O_CREAT | O_APPEND | O_RDWR, 0600);
-	if (fd == -1)
-	{
-		write(STDOUT_FILENO, "failed\n", 7);
-		return (EXIT_FAILURE);
-	}
+
 	while (read != -1)
 	{
 		write(STDOUT_FILENO, "#cisfun$ ", 9);
@@ -46,8 +35,8 @@ int main(int ac, char **av, char **env)
 			execute(args);
 		}
 	}
+
 	free(line);
-	close(fd);
 	return (EXIT_SUCCESS);
 }
 
