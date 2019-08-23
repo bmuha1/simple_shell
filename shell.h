@@ -42,6 +42,7 @@ typedef struct cmd_s
 int (*get_built_in(char *cmd))(char **args, char **env);
 int simple_exit(char **args, char **env);
 int simple_env(char **args, char **env);
+int simple_cd(char **args, char **env);
 int not_built_in(char **args, char **env);
 
 #endif /* SHELL_H */
