@@ -18,7 +18,7 @@ int execute(char **args)
 	{
 		if (execve(args[0], args, NULL) == -1)
 		{
-			perror("Can not execute");
+			perror(args[0]);
 			exit(EXIT_FAILURE);
 		}
 	}
