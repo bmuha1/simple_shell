@@ -54,6 +54,8 @@ int simple_history(char **args, char **env)
 	args[1] = _strdup("$HISTFILE");
 
 	return (EXIT_SUCCESS);
+}
+
 /**
  *
  *
