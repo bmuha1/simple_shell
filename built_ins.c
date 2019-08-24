@@ -57,9 +57,11 @@ int simple_history(char **args, char **env)
 }
 
 /**
+ * simple_cd - changes current directory
+ * @args: list of user input arguments
+ * @env: the enviromental variables
  *
- *
- *
+ * Return: On successful execution 0, on failure a status value
  */
 int simple_cd(char **args, char **env)
 {
@@ -76,20 +78,19 @@ int simple_cd(char **args, char **env)
 
 	if (exec_stat != 0)
 		return (exec_stat);
-	else
-	{
-		setenv("OLDPWD", getenv("PWD"), 1);
-		setenv("PWD", getcwd(buff, 4096), 1);
-	}
+
+	setenv("OLDPWD", getenv("PWD"), 1);
+	setenv("PWD", getcwd(buff, 4096), 1);
 	for (i = 0; args[i] != NULL; i++)
-                free(args[i]);
-        free(args);
+		free(args[i]);
+	free(args);
 	return (exec_stat);
 }
 
 /**
  * simple_env - prints the current enviroment variable values
- * @args:list of user input arguments
+ * @args: list of user input arguments
+ * @env: the enviromental variables
  *
  * Return: On successful execution 0, on failure a nonzero value
  */
@@ -111,6 +112,7 @@ int simple_env(char **args, char **env)
 /**
  * simple_exit - cause a termination of simple shell
  * @args: list of user input arguments
+ * @env: the enviromental variables
  *
  * Return: On successful execution 0, on failure a status value
  */
@@ -136,6 +138,7 @@ int simple_exit(char **args, char **env)
 /**
  * not_built_in - handles the case if inputted command isn't a built-in
  * @args: list of user input arguments
+ * @env: the enviromental variables
  *
  * Return: Always returns EXIT_FAILURE
  */
