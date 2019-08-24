@@ -5,7 +5,7 @@
  * @args: The command line arguments
  * @env: The environmental variables
  */
-void search_path(char **args, char **env)
+void search_path(char **args, list_t *env)
 {
 	int i;
 	char *tmp = NULL;
@@ -45,23 +45,4 @@ void search_path(char **args, char **env)
 	for (i = 0; path2[i] != NULL; i++)
 		free(path2[i]);
 	free(path2);
-}
-
-/**
- * _getenv - Find an environmental variable
- * @name: The name of the environmental variable to search for
- * @env: The environmental variables
- *
- * Return: Pointer to the environmental variable, or NULL if not found
- */
-char *_getenv(char *name, char **env)
-{
-	int i;
-
-	for (i = 0; env[i] != NULL; i++)
-		if ((_strstr(env[i], name) == env[i]) &&
-		    env[i][_strlen(name)] == '=')
-			return (env[i]);
-
-	return (NULL);
 }

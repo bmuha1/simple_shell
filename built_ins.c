@@ -7,7 +7,7 @@
  *
  * Return: On successful execution 0, on failure a status value
  */
-int simple_help(char **args, char **env)
+int simple_help(char **args, list_t *env)
 {
 	int i;
 	char output[] = "These shell commands are defined internally.  Type ";
@@ -40,7 +40,7 @@ int simple_help(char **args, char **env)
  *
  * Return: On successful execution 0, on failure a status value
  */
-int simple_history(char **args, char **env)
+int simple_history(char **args, list_t *env)
 {
 	int i;
 
@@ -63,24 +63,24 @@ int simple_history(char **args, char **env)
  *
  * Return: On successful execution 0, on failure a status value
  */
-int simple_cd(char **args, char **env)
+int simple_cd(char **args, list_t *env)
 {
 	int exec_stat, i;
 	char *input_dir = args[1];
 	char buff[4096]; /* PATH_MAX = 4096 */
 
 	if (input_dir == NULL)
-		exec_stat = chdir(getenv("HOME"));
+		exec_stat = chdir(_getenv_value("HOME", env));
 	else if (!_strcmp(input_dir, "-"))
-		exec_stat = chdir(getenv("OLDPWD"));
+		exec_stat = chdir(_getenv_value("OLDPWD", env));
 	else
 		exec_stat = chdir(input_dir);
 
 	if (exec_stat != 0)
 		return (exec_stat);
 
-	setenv("OLDPWD", getenv("PWD"), 1);
-	setenv("PWD", getcwd(buff, 4096), 1);
+	_setenv("OLDPWD", _getenv_value("PWD", env), &env);
+	_setenv("PWD", getcwd(buff, 4096), &env);
 	for (i = 0; args[i] != NULL; i++)
 		free(args[i]);
 	free(args);
@@ -94,14 +94,15 @@ int simple_cd(char **args, char **env)
  *
  * Return: On successful execution 0, on failure a nonzero value
  */
-int simple_env(char **args, char **env)
+int simple_env(char **args, list_t *env)
 {
 	int i;
 
-	for (i = 0; env[i] != NULL; i++)
+	for (i = 0; env != NULL; i++)
 	{
-		write(STDOUT_FILENO, env[i], _strlen(env[i]));
+		write(STDOUT_FILENO, env->var, _strlen(env->var));
 		write(STDOUT_FILENO, "\n", 1);
+		env = env->next;
 	}
 	for (i = 0; args[i] != NULL; i++)
 		free(args[i]);
@@ -110,13 +111,60 @@ int simple_env(char **args, char **env)
 }
 
 /**
+ * simple_unsetenv - remove an enviorment variable
+ * @args: list of user input arguments
+ * @env: the enviromental variables
+ *
+ * Return: On successful execution 0, on failure a nonzero value
+ */
+int simple_unsetenv(char **args, list_t *env)
+{
+	int i;
+
+	if (args[1] == NULL)
+	{
+		perror("Please provide an argument");
+		return (EXIT_FAILURE);
+	}
+	_unsetenv(args[1], &env);
+	for (i = 0; args[i] != NULL; i++)
+                free(args[i]);
+        free(args);
+	return (EXIT_SUCCESS);
+}
+
+/**
+ * simple_setenv - initialize a new or modify an existing enviromental variable
+ * @args: list of user input arguments
+ * @env: the enviromental variables
+ *
+ * Return: On successful execution 0, on failure a nonzero value
+ */
+int simple_setenv(char **args, list_t *env)
+{
+	int i;
+
+	if (args[1] == NULL || args[2] == NULL)
+	{
+		perror("Please provide arguments");
+		return (EXIT_FAILURE);
+	}
+	_setenv(args[1], args[2], &env);
+	for (i = 0; args[i] != NULL; i++)
+                free(args[i]);
+        free(args);
+	return (EXIT_SUCCESS);
+}
+
+
+/**
  * simple_exit - cause a termination of simple shell
  * @args: list of user input arguments
  * @env: the enviromental variables
  *
  * Return: On successful execution 0, on failure a status value
  */
-int simple_exit(char **args, char **env)
+int simple_exit(char **args, list_t *env)
 {
 	int i, status;
 	(void) env;
@@ -125,7 +173,7 @@ int simple_exit(char **args, char **env)
 	{
 		status = _atoi(args[1]);
 		if ((status < 0) || (status > 255))
-			return (0);
+			return (EXIT_SUCCESS);
 	}
 
 	for (i = 0; args[i] != NULL; i++)
@@ -142,7 +190,7 @@ int simple_exit(char **args, char **env)
  *
  * Return: Always returns EXIT_FAILURE
  */
-int not_built_in(char **args, char **env)
+int not_built_in(char **args, list_t *env)
 {
 	(void) args;
 	(void) env;

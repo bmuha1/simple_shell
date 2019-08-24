@@ -3,9 +3,9 @@
 /**
  * replace_dollars - Replace $$, $?, and $ variable replacement
  * @args: The arguments
- * @env: The environment
+ * @env: The environment variables
  */
-void replace_dollars(char **args, char **env)
+void replace_dollars(char **args, list_t *env)
 {
 	int i, pid;
 	char pid_string[12];
