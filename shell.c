@@ -18,6 +18,7 @@ int main(int ac, char **av)
 	char **args = NULL;
 	list_t *env = set_env_list();
 
+	(void) ac;
 	_setenv("argv", av[0], &env);
 	while (read != -1)
 	{
@@ -51,7 +52,7 @@ int main(int ac, char **av)
 
 	free(line);
 	free_list(env);
-	return (status);
+	return (EXIT_SUCCESS);
 }
 
 /**
