@@ -8,13 +8,13 @@
  *
  * Return: On success returns 0, on failure provides error number
  */
-int main(int ac, char **av, char **env)
+int main(int ac, char **av)
 {
 	size_t len = 0;
 	ssize_t read = 0;
 	char *line = NULL;
 	char **args = NULL;
-
+	list_t *env = set_env_list();
 	(void) ac;
 	(void) av;
 
@@ -30,7 +30,10 @@ int main(int ac, char **av, char **env)
 			args = strtow(line, " \t\r\n\v\f");
 			replace_dollars(args, env);
 			if (_strcmp(args[0], "exit") == 0)
+			{
 				free(line);
+				free_list(env);
+			}
 			if (get_built_in(args[0])(args, env) == EXIT_SUCCESS)
 				continue;
 			search_path(args, env);
@@ -39,6 +42,7 @@ int main(int ac, char **av, char **env)
 	}
 
 	free(line);
+	free_list(env);
 	return (EXIT_SUCCESS);
 }
 
