@@ -27,6 +27,7 @@ int execute(char **args, list_t *env)
 			write(STDERR_FILENO, ": ", 2);
 			write(STDERR_FILENO, args[0], _strlen(args[0]));
 			write(STDERR_FILENO, ": not found\n", 12);
+			_setenv("old_status", "127", &env);
 			exit(127);
 		}
 	}
