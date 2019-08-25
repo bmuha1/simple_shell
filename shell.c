@@ -21,8 +21,8 @@ int main(int ac, char **av)
 	_setenv("argv", av[0], &env);
 	while (read != -1)
 	{
-		if(isatty(STDIN_FILENO))
-		   write(STDOUT_FILENO, "#cisfun$ ", 9);
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "#cisfun$ ", 9);
 		read = getline(&line, &len, stdin);
 		if (read != -1)
 		{
