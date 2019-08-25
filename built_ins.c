@@ -57,8 +57,40 @@ int simple_history(char **args, char **env)
 }
 
 /**
+ * simple_cd - changes current directory
+ * @args: list of user input arguments
+ * @env: the enviromental variables
+ *
+ * Return: On successful execution 0, on failure a status value
+ */
+int simple_cd(char **args, char **env)
+{
+	int exec_stat, i;
+	char *input_dir = args[1];
+	char buff[4096]; /* PATH_MAX = 4096 */
+
+	if (input_dir == NULL)
+		exec_stat = chdir(getenv("HOME"));
+	else if (!_strcmp(input_dir, "-"))
+		exec_stat = chdir(getenv("OLDPWD"));
+	else
+		exec_stat = chdir(input_dir);
+
+	if (exec_stat != 0)
+		return (exec_stat);
+
+	setenv("OLDPWD", getenv("PWD"), 1);
+	setenv("PWD", getcwd(buff, 4096), 1);
+	for (i = 0; args[i] != NULL; i++)
+		free(args[i]);
+	free(args);
+	return (exec_stat);
+}
+
+/**
  * simple_env - prints the current enviroment variable values
- * @args:list of user input arguments
+ * @args: list of user input arguments
+ * @env: the enviromental variables
  *
  * Return: On successful execution 0, on failure a nonzero value
  */
@@ -80,6 +112,7 @@ int simple_env(char **args, char **env)
 /**
  * simple_exit - cause a termination of simple shell
  * @args: list of user input arguments
+ * @env: the enviromental variables
  *
  * Return: On successful execution 0, on failure a status value
  */
@@ -92,7 +125,7 @@ int simple_exit(char **args, char **env)
 	{
 		status = _atoi(args[1]);
 		if ((status < 0) || (status > 255))
-			status = 2;
+			return (0);
 	}
 
 	for (i = 0; args[i] != NULL; i++)
@@ -105,6 +138,7 @@ int simple_exit(char **args, char **env)
 /**
  * not_built_in - handles the case if inputted command isn't a built-in
  * @args: list of user input arguments
+ * @env: the enviromental variables
  *
  * Return: Always returns EXIT_FAILURE
  */
