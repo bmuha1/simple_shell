@@ -128,7 +128,6 @@ char *_getenv(char *name, list_t *h)
 			return (h->var);
 		h = h->next;
 	}
-	perror("Enviroment variable wasn't found");
 	return ("");
 }
 

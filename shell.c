@@ -12,18 +12,23 @@ int main(int ac, char **av)
 {
 	size_t len = 0;
 	ssize_t read = 0;
+	int count = 0, status = 0;
+	char count_string[12] = "", status_string[12] = "";
 	char *line = NULL;
 	char **args = NULL;
 	list_t *env = set_env_list();
-	(void) ac;
-	(void) av;
 
+	_setenv("argv", av[0], &env);
 	while (read != -1)
 	{
-		write(STDOUT_FILENO, "#cisfun$ ", 9);
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "#cisfun$ ", 9);
 		read = getline(&line, &len, stdin);
 		if (read != -1)
 		{
+			_ntoa_rev(++count, count_string);
+			rev_string(count_string);
+			_setenv("count", count_string, &env);
 			remove_comments(line);
 			if (only_delims(line))
 				continue;
@@ -38,13 +43,16 @@ int main(int ac, char **av)
 			if (get_built_in(args[0])(args, env) == EXIT_SUCCESS)
 				continue;
 			search_path(args, env);
-			execute(args);
+			status = execute(args, env);
+			_ntoa_rev(status, status_string);
+			rev_string(status_string);
+			_setenv("old_status", status_string, &env);
 		}
 	}
 
 	free(line);
 	free_list(env);
-	return (EXIT_SUCCESS);
+	return (status);
 }
 
 /**

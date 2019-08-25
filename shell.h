@@ -41,7 +41,7 @@ void search_path(char **args, list_t *env);
 void replace_dollars(char **args, list_t *env);
 
 /* command execution functions */
-int execute(char **args);
+int execute(char **args, list_t *env);
 
 /* string functions */
 char **strtow(char *str, char *delim);
