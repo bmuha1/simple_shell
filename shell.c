@@ -35,8 +35,8 @@ int main(int ac, char **av)
 				continue;
 			args = strtow(line, " \t\r\n\v\f");
 			replace_dollars(args, env);
-			if (_strcmp(args[0], "exit") == 0/* &&
-			    _strlen(args[0]) == _strlen("exit")*/)
+			if (_strcmp(args[0], "exit") == 0 &&
+			    _strlen(args[0]) == _strlen("exit"))
 			{
 				free(line);
 				free_list(env);
