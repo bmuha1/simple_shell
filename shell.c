@@ -39,7 +39,8 @@ int main(int ac, char **av)
 			last_status = get_built_in(args[0])(args, env);
 			if (last_status == 0 || last_status == 2)
 				continue;
-			search_path(args, env);
+			if (!_strpbrk(args[0], '/'))
+				search_path(args, env);
 			last_status = execute(args, env);
 			_ntoa_rev(last_status, status_string);
 			rev_string(status_string);
