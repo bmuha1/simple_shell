@@ -19,6 +19,7 @@ int main(int ac, char **av)
 
 	(void) ac;
 	_setenv("argv", av[0], &env);
+	signal(SIGINT, handle_sigint);
 	while (read != -1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -48,6 +49,15 @@ int main(int ac, char **av)
 	free(line);
 	free_list(env);
 	return (EXIT_SUCCESS);
+}
+
+/**
+ * handle_sigint - Handle the signal Ctrl+C
+ * @sig: The signal
+ */
+void handle_sigint(int sig)
+{
+	(void) sig;
 }
 
 /**
