@@ -12,14 +12,26 @@ void search_path(char **args, list_t *env)
 	char *tmp2 = NULL;
 	char **path = NULL;
 	char **path2 = NULL;
+	char buff[4096]; /* PATH_MAX = 4096 */
 	struct stat st;
 
+	getcwd(buff, 4096);
+	printf("buff: %s\n", buff);
+
 	tmp = _getenv("PATH", env);
+	if (tmp[0] == ':')
+		tmp = str_concat(buff, tmp);
+	else if (tmp[_strlen(tmp)] == ':')
+		tmp = str_concat(tmp, buff);
 	path = strtow(tmp, "=");
 	path2 = strtow(path[1], ":");
 
 	if (!path2)
 		return;
+
+	/* TESTING */
+	for (i = 0; path2[i] != NULL; i++)
+		printf("path[%d]: %s\n", i, path2[i]);
 
 	for (i = 0; path2[i] != NULL; i++)
 	{
