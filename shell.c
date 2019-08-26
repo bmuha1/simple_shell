@@ -12,7 +12,7 @@ int main(int ac, char **av)
 	size_t len = 0;
 	ssize_t read = 0;
 	int count = 0, last_status = 0;
-	char count_string[12] = "";
+	char count_string[12] = "", status_string[12] = "";
 	char *line = NULL;
 	char **args = NULL;
 	list_t *env = set_env_list();
@@ -35,20 +35,18 @@ int main(int ac, char **av)
 			replace_dollars(args, env);
 			if (_strcmp(args[0], "exit") == 0 &&
 			    _strlen(args[0]) == _strlen("exit"))
-			{
-				free(line);
-				free_list(env);
-			}
+				free(line), free_list(env);
 			last_status = get_built_in(args[0])(args, env);
 			if (last_status == 0 || last_status == 2)
 				continue;
 			search_path(args, env);
 			last_status = execute(args, env);
+			_ntoa_rev(last_status, status_string);
+			rev_string(status_string);
+			_setenv("last_status", status_string, &env);
 		}
 	}
-
-	free(line);
-	free_list(env);
+	free(line), free_list(env);
 	return (last_status);
 }
 

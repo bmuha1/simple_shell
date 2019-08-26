@@ -28,7 +28,9 @@ void replace_dollars(char **args, list_t *env)
 			else if (args[i][1] == '?')
 			{
 				free(args[i]);
-				tmp = _getenv_value("old_status", env);
+				tmp = _getenv_value("last_status", env);
+				if (tmp[0] == '\0')
+					tmp = "0";
 				args[i] = _strdup(tmp);
 			}
 			else
