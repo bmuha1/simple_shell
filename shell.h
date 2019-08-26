@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <dirent.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -34,6 +35,7 @@ void free_list(list_t *h);
 
 void remove_comments(char *line);
 int only_delims(char *line);
+void handle_sigint(int sig);
 
 /* see if program exists in path directories */
 void search_path(char **args, list_t *env);

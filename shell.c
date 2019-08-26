@@ -4,7 +4,6 @@
  * main - provides a prompt to be interpreted by the shell
  * @ac: number of items in av
  * @av: NULL terminated array of strings representing inputted arguments
- * @env: NULL terminated array of strings representing current enviroment
  *
  * Return: On success returns 0, on failure provides error number
  */
@@ -20,6 +19,7 @@ int main(int ac, char **av)
 
 	(void) ac;
 	_setenv("argv", av[0], &env);
+	signal(SIGINT, handle_sigint);
 	while (read != -1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -51,6 +51,15 @@ int main(int ac, char **av)
 	free(line);
 	free_list(env);
 	return (EXIT_SUCCESS);
+}
+
+/**
+ * handle_sigint - Handle the signal Ctrl+C
+ * @sig: The signal
+ */
+void handle_sigint(int sig)
+{
+	(void) sig;
 }
 
 /**
