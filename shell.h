@@ -43,7 +43,7 @@ void search_path(char **args, list_t *env);
 void replace_dollars(char **args, list_t *env);
 
 int execute(char **args, list_t *env);
-void error_not_found(char **args, list_t *env);
+void print_error(char **args, list_t *env, char *message);
 
 char **strtow(char *str, char *delim);
 int count_words(char *str, char *delim);

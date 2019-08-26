@@ -11,7 +11,7 @@ int main(int ac, char **av)
 {
 	size_t len = 0;
 	ssize_t read = 0;
-	int count = 0;
+	int count = 0, last_status = 0;
 	char count_string[12] = "";
 	char *line = NULL;
 	char **args = NULL;
@@ -39,16 +39,17 @@ int main(int ac, char **av)
 				free(line);
 				free_list(env);
 			}
-			if (get_built_in(args[0])(args, env) == EXIT_SUCCESS)
+			last_status = get_built_in(args[0])(args, env);
+			if (last_status == 0 || last_status == 2)
 				continue;
 			search_path(args, env);
-			execute(args, env);
+			last_status = execute(args, env);
 		}
 	}
 
 	free(line);
 	free_list(env);
-	return (EXIT_SUCCESS);
+	return (last_status);
 }
 
 /**

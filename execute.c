@@ -10,7 +10,7 @@
 int execute(char **args, list_t *env)
 {
 	pid_t child;
-	int i, status = 0;
+	int i, status = 0, exit_status = 0;
 
 	child = fork();
 	if (child == -1)
@@ -18,35 +18,25 @@ int execute(char **args, list_t *env)
 	else if (child == 0)
 	{
 		if (!_strpbrk(args[0], '/'))
-			error_not_found(args, env);
+		{
+			print_error(args, env, "not found");
+			exit(127);
+		}
 		if (execve(args[0], args, NULL) == -1)
-			error_not_found(args, env);
+		{
+			print_error(args, env, "not found");
+			exit(127);
+		}
 	}
 	else
-		wait(&status);
+		waitpid(child, &status, 0);
+
+	if (WIFEXITED(status))
+		exit_status = WEXITSTATUS(status);
 
 	for (i = 0; args[i] != NULL; i++)
 		free(args[i]);
 	free(args);
 
-	return (EXIT_SUCCESS);
-}
-
-/**
- * error_not_found - Print error message if file not found and exit
- * @args: NULL terminated array of argument strings
- * @env: The environmental variables
- */
-void error_not_found(char **args, list_t *env)
-{
-	write(STDERR_FILENO, _getenv_value("argv", env),
-	      _strlen(_getenv_value("argv", env)));
-	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, _getenv_value("count", env),
-	      _strlen(_getenv_value("count", env)));
-	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, args[0], _strlen(args[0]));
-	write(STDERR_FILENO, ": not found\n", 12);
-	_setenv("old_status", "127", &env);
-	exit(127);
+	return (exit_status);
 }

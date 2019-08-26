@@ -77,7 +77,7 @@ int simple_cd(char **args, list_t *env)
 		exec_stat = chdir(input_dir);
 
 	if (exec_stat != 0)
-		return (exec_stat);
+		return (2);
 
 	_setenv("OLDPWD", _getenv_value("PWD", env), &env);
 	_setenv("PWD", getcwd(buff, 4096), &env);
