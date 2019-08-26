@@ -12,11 +12,12 @@
 
 extern char **environ;
 /**
- * struct list_s - linked list that hold a name and corresponding value per node
+ * struct list_s - linked list that hold a name with value per node
  * @var: variable in the notation "name=value"
  * @next: points to the next node
  */
-typedef struct list_s {
+typedef struct list_s
+{
 	char *var;
 	struct list_s *next;
 } list_t;
@@ -34,17 +35,12 @@ void free_list(list_t *h);
 
 void remove_comments(char *line);
 int only_delims(char *line);
-
-/* see if program exists in path directories */
 void search_path(char **args, list_t *env);
-
 void replace_dollars(char **args, list_t *env);
 
-/* command execution functions */
 int execute(char **args, list_t *env);
 void error_not_found(char **args, list_t *env);
 
-/* string functions */
 char **strtow(char *str, char *delim);
 int count_words(char *str, char *delim);
 int _strlen(const char *s);
@@ -58,7 +54,6 @@ int _strpbrk(char *s, char accept);
 void _ntoa_rev(int n, char *s);
 void rev_string(char *s);
 
-/* builtin functions and handlers */
 /**
  * struct cmd_s - used to identify a built-in to execute
  * @type: an existing built-in function

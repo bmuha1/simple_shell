@@ -1,52 +1,10 @@
 #include "shell.h"
 
-extern char **environ;
-
-list_t *add_node_end(list_t **head, char *var)
-{
-        list_t *new;
-        list_t *temp = *head;
-
-        new = malloc(sizeof(list_t));
-        if (new == NULL)
-                return (NULL);
-        new->var = _strdup(var);
-	new->next = NULL;
-
-        if (*head == NULL)
-                *head = new;
-        else
-        {
-                while (temp->next != NULL)
-                        temp = temp->next;
-                temp->next = new;
-        }
-        return (new);
-}
-
-list_t *add_node_at_index(list_t **head, int idx, char *var)
-{
-	list_t *new;
-
-	if (head == NULL)
-		return (NULL);
-	if (idx != 0)
-	{
-		if (*head != NULL)
-			return (add_node_at_index(&(*head)->next,
-							idx - 1, var));
-		else
-			return (NULL);
-	}
-	new = malloc(sizeof(list_t));
-	if (new == NULL)
-		return (NULL);
-	new->var = _strdup(var);
-	new->next = *head;
-	*head = new;
-	return (new);
-}
-
+/**
+ * set_env_list - sets an enviromental list
+ *
+ * Return: enviromental list
+ */
 list_t *set_env_list(void)
 {
 	list_t *envlist = NULL;
@@ -56,81 +14,32 @@ list_t *set_env_list(void)
 	return (envlist);
 }
 
-size_t print_list(const list_t *h)
-{
-        int len = 0;
-
-        for (len = 0; h != NULL; ++len)
-        {
-                printf("%s\n", h->var);
-                h = h->next;
-        }
-        return (len);
-}
-
-void free_list(list_t *h)
-{
-        if (h == NULL)
-                return;
-        free_list(h->next);
-        free(h->var);
-        free(h);
-}
-
-int delete_node_at_index(list_t **head, size_t index)
-{
-	list_t *tmp;
-
-	if (head == NULL)
-		return (-1);
-	if (index != 0)
-	{
-		if (*head != NULL)
-			return (delete_node_at_index(&(*head)->next,
-							index - 1));
-		else
-			return (-1);
-	}
-	if (*head == NULL)
-		return (-1);
-	tmp = (*head)->next;
-	free((*head)->var);
-	free(*head);
-	*head = tmp;
-	return (1);
-}
-
-int find_var_index(char *name, list_t *h)
-{
-	int i, flag = 0;
-
-	for (i = 0; h != NULL; i++, h = h->next)
-	{
-		if ((_strstr(h->var, name) == h->var) &&
-		    *(h->var + _strlen(name)) == '=')
-		{
-			flag = 1;
-			break;
-		}
-	}
-	if (flag)
-		return (i);
-	else
-		return (-1);
-}
-
+/**
+ * _getenv - gets the var string relative to its name
+ * @name: name from variable
+ * @h: list to search from
+ *
+ * Return: String of variable else failure returns empty string
+ */
 char *_getenv(char *name, list_t *h)
 {
 	while (h != NULL)
 	{
 		if ((_strstr(h->var, name) == h->var) &&
-		   *(h->var + _strlen(name)) == '=')
+		    *(h->var + _strlen(name)) == '=')
 			return (h->var);
 		h = h->next;
 	}
 	return ("");
 }
 
+/**
+ * _getenv_value - gets the value relative to the name of var string
+ * @name: name from variable
+ * @h: list to search from
+ *
+ * Return: Value of variable string else failure returns empty string
+ */
 char *_getenv_value(char *name, list_t *h)
 {
 	char *var = NULL;
@@ -143,6 +52,11 @@ char *_getenv_value(char *name, list_t *h)
 	return (value + 1);
 }
 
+/**
+ * _unsetenv - if env node found, removes it from the env list
+ * @name: name from variable string
+ * @head: reference to a list
+ */
 void _unsetenv(char *name, list_t **head)
 {
 	int index = find_var_index(name, *head);
@@ -154,6 +68,12 @@ void _unsetenv(char *name, list_t **head)
 		perror("Unable to unset");
 }
 
+/**
+ * _setenv - either modifies an existing env node or adds a node to the end
+ * @name: name from variable string
+ * @value: value from variable string
+ * @head: reference to a list
+ */
 void _setenv(char *name, char *value, list_t **head)
 {
 	int index = find_var_index(name, *head);
@@ -180,18 +100,3 @@ void _setenv(char *name, char *value, list_t **head)
 
 	free(new4);
 }
-
-/*int main(void)
-{
-	list_t *envlist = set_env_list();
-	char *bob = "BANANANANANANA";
-
-	print_list(envlist);
-	printf("--------------------------------------------------------------------------------------\n");
-	//_unsetenv("PATH", &envlist);
-	//print_list(envlist);
-	//_setenv("PATH", "DEATH", &envlist);
-	//print_list(envlist);
-	printf("%s\n", _getenv_value("HAHA", envlist));
-	free_list(envlist);
-	} */

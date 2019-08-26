@@ -1,5 +1,9 @@
 #include "shell.h"
 
+/**
+ * which_help - display info about builtins
+ * @command: builtin commands
+ */
 void which_help(char *command)
 {
 	char alias[] = "alias help\n";

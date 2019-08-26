@@ -4,7 +4,6 @@
  * main - provides a prompt to be interpreted by the shell
  * @ac: number of items in av
  * @av: NULL terminated array of strings representing inputted arguments
- * @env: NULL terminated array of strings representing current enviroment
  *
  * Return: On success returns 0, on failure provides error number
  */
