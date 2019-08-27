@@ -43,15 +43,14 @@ int simple_help(char **args, list_t *env)
 int simple_history(char **args, list_t *env)
 {
 	int i;
+	char output[] = "History may be implemented in a future release.\n";
 
 	(void) env;
+	write(STDOUT_FILENO, output, _strlen(output));
 
 	for (i = 0; args[i] != NULL; i++)
 		free(args[i]);
 	free(args);
-
-	args[0] = _strdup("echo");
-	args[1] = _strdup("$HISTFILE");
 
 	return (EXIT_SUCCESS);
 }
