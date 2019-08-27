@@ -74,7 +74,7 @@ list_t *set_dir_list(list_t *env)
                 if (path[i] != '\0')
                         i++;
                 new_word[j] = '\0';
-                if (!_strcmp(new_word, "\0") && _strlen(new_word) == _strlen("\0"))
+                if (_cmpstrandlen(new_word, "\0") == 0)
                         add_node_end(&dir_list, ".");
                 else
                         add_node_end(&dir_list, new_word);

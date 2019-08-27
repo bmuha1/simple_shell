@@ -22,8 +22,7 @@ int (*get_built_in(char *cmd))(char **args, list_t *env)
 
 	for (i = 0; command[i].type != NULL; i++)
 	{
-		if (!_strcmp(cmd, command[i].type) &&
-		    (_strlen(cmd) == _strlen(command[i].type)))
+		if (_cmpstrandlen(cmd, command[i].type) == 0)
 			return (command[i].exec_built_in);
 	}
 	return (command[i].exec_built_in);

@@ -64,7 +64,7 @@ int simple_cd(char **args, list_t *env)
 
 	if (input_dir == NULL)
 		exec_stat = chdir(_getenv_value("HOME", env));
-	else if (!_strcmp(input_dir, "-"))
+	else if (_cmpstrandlen(input_dir, "-") == 0)
 		exec_stat = chdir(_getenv_value("OLDPWD", env)), is_sign = 1;
 	else
 		exec_stat = chdir(input_dir);

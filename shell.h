@@ -60,6 +60,7 @@ char *_strdup(char *str);
 int _strpbrk(char *s, char accept);
 void _ntoa_rev(int n, char *s);
 void rev_string(char *s);
+int _cmpstrandlen(char *s1, char *s2);
 
 /**
  * struct cmd_s - used to identify a built-in to execute
