@@ -45,11 +45,10 @@ list_t *set_dir_list(list_t *env)
 	char delim = ':';
 	char *path = NULL;
 	list_t *dir_list = NULL;
-	int flag = 0;
 
         path = _getenv_value("PATH", env);
         if (path == NULL)
-                return;
+                return (dir_list);
 
         i = 0;
         while (path[i] != '\0')
