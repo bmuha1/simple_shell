@@ -23,7 +23,7 @@ int main(int ac, char **av)
 	while (read != -1)
 	{
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "#cisfun$ ", 9);
+			write(STDOUT_FILENO, "<^^^> ", 6);
 		read = getline(&line, &len, stdin);
 		if (read != -1)
 		{
@@ -38,6 +38,11 @@ int main(int ac, char **av)
 			if (_cmpstrandlen(args[0], "exit") == 0)
 				free(line);
 			last_status = get_built_in(args[0])(args, env);
+
+			_ntoa_rev(last_status, status_string);
+			rev_string(status_string);
+			_setenv("last_status", status_string, &env);
+
 			if (last_status == 0 || last_status == 2)
 				continue;
 			if (!_strpbrk(args[0], '/'))
@@ -59,7 +64,7 @@ int main(int ac, char **av)
 void handle_sigint(int sig)
 {
 	(void) sig;
-	write(STDOUT_FILENO, "\n#cisfun$ ", 10);
+	write(STDOUT_FILENO, "\n<^^^> ", 10);
 }
 
 /**

@@ -17,10 +17,9 @@ int simple_env(char **args, list_t *env)
 		write(STDOUT_FILENO, "\n", 1);
 		env = env->next;
 	}
-	for (i = 0; args[i] != NULL; i++)
-		free(args[i]);
-	free(args);
-	return (EXIT_SUCCESS);
+
+	free_args(args);
+	return (0);
 }
 
 /**
@@ -28,7 +27,7 @@ int simple_env(char **args, list_t *env)
  * @args: list of user input arguments
  * @env: the enviromental variables
  *
- * Return: On successful execution 0, on failure a nonzero value
+ * Return: On successful execution 0, on failure 2
  */
 int simple_unsetenv(char **args, list_t *env)
 {
@@ -36,14 +35,13 @@ int simple_unsetenv(char **args, list_t *env)
 
 	if (args[1] == NULL)
 	{
-		perror("Please provide an argument");
-		return (EXIT_FAILURE);
+		print_error(args, env, "Please provide an argument");
+		free_args(args);
+		return (2);
 	}
 	_unsetenv(args[1], &env);
-	for (i = 0; args[i] != NULL; i++)
-		free(args[i]);
-	free(args);
-	return (EXIT_SUCCESS);
+	free_args(args);
+	return (0);
 }
 
 /**
@@ -51,7 +49,7 @@ int simple_unsetenv(char **args, list_t *env)
  * @args: list of user input arguments
  * @env: the enviromental variables
  *
- * Return: On successful execution 0, on failure a nonzero value
+ * Return: On successful execution 0, on failure 2
  */
 int simple_setenv(char **args, list_t *env)
 {
@@ -59,12 +57,11 @@ int simple_setenv(char **args, list_t *env)
 
 	if (args[1] == NULL || args[2] == NULL)
 	{
-		perror("Please provide arguments");
-		return (EXIT_FAILURE);
+		print_error(args, env, "Please provide arguments");
+		free_args(args);
+		return (2);
 	}
 	_setenv(args[1], args[2], &env);
-	for (i = 0; args[i] != NULL; i++)
-		free(args[i]);
-	free(args);
-	return (EXIT_SUCCESS);
+	free_args(args);
+	return (2);
 }
