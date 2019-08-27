@@ -10,10 +10,10 @@ void search_path(char **args, list_t *env)
         int i;
         char *tmp = NULL;
         char *tmp2 = NULL;
-        list_t *h = NULL;
+        list_t *head = set_dir_list(env);
+	list_t *h = head;
         struct stat st;
 
-	h = set_dir_list(env);
         for (i = 0; h != NULL; ++i, h = h->next)
         {
                 tmp = str_concat(h->var, "/");
@@ -29,7 +29,7 @@ void search_path(char **args, list_t *env)
                 else
                         free(tmp2);
         }
-        free_list(h);
+        free_list(head);
 }
 
 /**
@@ -49,9 +49,14 @@ list_t *set_dir_list(list_t *env)
 
         path = _getenv_value("PATH", env);
         if (path == NULL)
-                return;
+                return (NULL);
 
         i = 0;
+	if (path[0] == '\0')
+	{
+		add_node_end(&dir_list, ".");
+		return (dir_list);
+	}
         while (path[i] != '\0')
         {
                 new_word = malloc(_strlen(path) * sizeof(char));
