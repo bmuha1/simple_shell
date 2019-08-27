@@ -6,17 +6,20 @@
  */
 void which_help(char *command)
 {
-	char alias[] = "alias help\n";
-	char cd[] = "cd help\n";
-	char env[] = "env help\n";
-	char exit[] = "exit help\n";
-	char help[] = "help help\n";
-	char setenv[] = "setenv help\n";
-	char unsetenv[] = "unsetenv help\n";
-	char no_match[] = "no match found\n";
+	char alias[] = "alias: Define or display aliases.\n";
+	char cd[] = "cd: Change the shell working directory.\n";
+	char env[] = "env: Display the environmental variables.\n";
+	char exit[] = "exit: Exit the shell.\n";
+	char help[] = "help: Display information about builtin commands.\n";
+	char setenv[] = "setenv: Set an environmental variable.\n";
+	char unsetenv[] = "unsetenv: Unset an environmental variable.\n";
+	char no_match[] = ": no help topics match '";
+	char no_match2[] = "'. Try 'help help'.\n";
 
 	if (_strcmp("alias", command) == 0)
+	{
 		write(STDOUT_FILENO, alias, _strlen(alias));
+	}
 	else if (_strcmp("cd", command) == 0)
 		write(STDOUT_FILENO, cd, _strlen(cd));
 	else if (_strcmp("env", command) == 0)
@@ -30,5 +33,10 @@ void which_help(char *command)
 	else if (_strcmp("unsetenv", command) == 0)
 		write(STDOUT_FILENO, unsetenv, _strlen(unsetenv));
 	else
+	{
+		write(STDOUT_FILENO, command, _strlen(command));
 		write(STDOUT_FILENO, no_match, _strlen(no_match));
+		write(STDOUT_FILENO, command, _strlen(command));
+		write(STDOUT_FILENO, no_match2, _strlen(no_match2));
+	}
 }
