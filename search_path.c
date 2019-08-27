@@ -7,42 +7,76 @@
  */
 void search_path(char **args, list_t *env)
 {
-	int i;
-	char *tmp = NULL;
-	char *tmp2 = NULL;
-	char **path = NULL;
-	char **path2 = NULL;
-	struct stat st;
+        int i;
+        char *tmp = NULL;
+        char *tmp2 = NULL;
+        list_t *h = NULL;
+        struct stat st;
 
-	tmp = _getenv("PATH", env);
-	path = strtow(tmp, "=");
-	path2 = strtow(path[1], ":");
+	h = set_dir_list(env);
+        for (i = 0; h != NULL; ++i, h = h->next)
+        {
+                tmp = str_concat(h->var, "/");
+                tmp2 = str_concat(tmp, args[0]);
+                free(tmp);
+                if (stat(tmp2, &st) == 0)
+                {
+                        free(args[0]);
+                        args[0] = _strdup(tmp2);
+                        free(tmp2);
+                        break;
+                }
+                else
+                        free(tmp2);
+        }
+        free_list(h);
+}
 
-	if (!path2)
-		return;
+/**
+ * set_dir_list - Create a linked list of directories from the path env var
+ * @env: The enviromental variables
+ *
+ * Return: The list of directories
+ */
+list_t *set_dir_list(list_t *env)
+{
+	int i, j;
+	char *new_word;
+	char delim = ':';
+	char *path = NULL;
+	list_t *dir_list = NULL;
+	int flag = 0;
 
-	for (i = 0; path2[i] != NULL; i++)
-	{
-		tmp = str_concat(path2[i], "/");
-		tmp2 = str_concat(tmp, args[0]);
-		free(tmp);
+        path = _getenv_value("PATH", env);
+        if (path == NULL)
+                return;
 
-		if (stat(tmp2, &st) == 0)
+        i = 0;
+        while (path[i] != '\0')
+        {
+                new_word = malloc(_strlen(path) * sizeof(char));
+		if (new_word == NULL)
 		{
-			free(args[0]);
-			args[0] = _strdup(tmp2);
-			free(tmp2);
-			break;
+			free(new_word);
+			return (NULL);
 		}
-		else
-			free(tmp2);
-	}
-
-	for (i = 0; path[i] != NULL; i++)
-		free(path[i]);
-	free(path);
-
-	for (i = 0; path2[i] != NULL; i++)
-		free(path2[i]);
-	free(path2);
+		j = 0;
+                while (path[i] != delim && path[i] != '\0')
+                {
+                        new_word[j] = path[i];
+                        i++;
+                        j++;
+                }
+                if (path[i] != '\0')
+                        i++;
+                new_word[j] = '\0';
+                if (!_strcmp(new_word, "\0") && _strlen(new_word) == _strlen("\0"))
+                        add_node_end(&dir_list, ".");
+                else
+                        add_node_end(&dir_list, new_word);
+                free(new_word);
+        }
+        if (path[i] == '\0' && path[i-1] == delim)
+                add_node_end(&dir_list, ".");
+	return (dir_list);
 }
