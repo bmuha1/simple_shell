@@ -1,6 +1,9 @@
-# Simple Shell
+# Brent and Sudeep's Blue Shell
 
-Simple shell is a UNIX command interpreter. It's designed to mimic Bash.
+![Image of Blue Shell]
+(https://i.imgur.com/1vMhRiL.png)
+
+Brent and Sudeep's Blue Shell is a UNIX command interpreter. It's designed to mimic Bash.
 
 ## Requirements
 
@@ -79,6 +82,11 @@ hsh main.c shell.c test_ls_2
 hsh main.c shell.c test_ls_2
 $
 ```
+
+## Flowchart
+
+![Image of Flowchart]
+(https://i.imgur.com/GUtPTTZ.jpg)
 
 ## Supported Builtin Functions
 
