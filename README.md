@@ -60,7 +60,6 @@ The shell works like this in interactive mode:
 $ ./hsh
 <^^^> /bin/ls
 hsh main.c shell.c
-<^^^>
 <^^^> exit
 $
 ```
@@ -85,7 +84,6 @@ $
 
 | Builtin | Description |
 |:-------:| ----------- |
-| alias | Define or display aliases |
 | cd | Change the shell working directory |
 | env | Display the environmental variables |
 | exit | Exit the shell |
