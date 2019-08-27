@@ -86,10 +86,10 @@ $
 ```bash
 $ ./hsh
 #cisfun$ ls
-AUTHORS      execute.c		    hsh		   shell.h	     test_cats
-README.md    file		    		       ls		   string_helper.c   test_ls_2
-a.out	          get_built_in.c		           search_path.c  string_helper2.c
-built_ins.c  history_main_shell.cc  shell.c		      string_helper3.c
+AUTHORS		file		search_path.c	string_helper2.c
+README.md	get_built_in.c	shell.c		string_helper3.c
+built_ins.c	hsh		shell.h		test_cats
+execute.c	ls		string_helper.c	test_ls_2
 #cisfun$
 ```
 
