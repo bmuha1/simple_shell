@@ -81,6 +81,18 @@ hsh main.c shell.c test_ls_2
 $
 ```
 
+## Supported Builtin Functions
+
+Builtin | Description
+------- | -----------
+alias | Define or display aliases
+cd | Change the shell working directory
+env | Display the environmental variables
+exit | Exit the shell
+help | Display information about builtin commands
+setenv | Set an environmental variable
+unsetenv | Unset an environmental variable
+
 ## Examples
 
 ```bash
