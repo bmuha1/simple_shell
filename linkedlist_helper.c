@@ -115,16 +115,3 @@ int find_var_index(char *name, list_t *h)
 	else
 		return (-1);
 }
-
-/**
- * free_list - frees a given list
- * @h: list to free
- */
-void free_list(list_t *h)
-{
-	if (h == NULL)
-		return;
-	free_list(h->next);
-	free(h->var);
-	free(h);
-}

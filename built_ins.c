@@ -9,7 +9,6 @@
  */
 int simple_help(char **args, list_t *env)
 {
-	int i;
 	char output[] = "These shell commands are defined internally.  Type ";
 	char output2[] = "`help' to see this list.\nType `help name' to find ";
 	char output3[] = "out more about the function `name'.\n";
@@ -26,11 +25,8 @@ int simple_help(char **args, list_t *env)
 	else
 		which_help(args[1]);
 
-	for (i = 0; args[i] != NULL; i++)
-		free(args[i]);
-	free(args);
-
-	return (EXIT_SUCCESS);
+	free_args(args);
+	return (0);
 }
 
 /**
@@ -47,12 +43,9 @@ int simple_history(char **args, list_t *env)
 
 	(void) env;
 	write(STDOUT_FILENO, output, _strlen(output));
+	free_args(args);
 
-	for (i = 0; args[i] != NULL; i++)
-		free(args[i]);
-	free(args);
-
-	return (EXIT_SUCCESS);
+	return (0);
 }
 
 /**
@@ -64,26 +57,61 @@ int simple_history(char **args, list_t *env)
  */
 int simple_cd(char **args, list_t *env)
 {
-	int exec_stat, i;
+	int exec_stat, is_sign = 0;
 	char *input_dir = args[1];
+	char *current_dir;
+	char *error_msg;
 	char buff[4096]; /* PATH_MAX = 4096 */
 
 	if (input_dir == NULL)
 		exec_stat = chdir(_getenv_value("HOME", env));
 	else if (!_strcmp(input_dir, "-"))
-		exec_stat = chdir(_getenv_value("OLDPWD", env));
+		exec_stat = chdir(_getenv_value("OLDPWD", env)), is_sign = 1;
 	else
 		exec_stat = chdir(input_dir);
 
 	if (exec_stat != 0)
+	{
+		error_msg = str_concat("can't cd to ", input_dir);
+		print_error(args, env, error_msg);
+		free(error_msg);
+		free_args(args);
 		return (2);
+	}
 
 	_setenv("OLDPWD", _getenv_value("PWD", env), &env);
 	_setenv("PWD", getcwd(buff, 4096), &env);
-	for (i = 0; args[i] != NULL; i++)
-		free(args[i]);
-	free(args);
-	return (exec_stat);
+
+	current_dir = _getenv_value("PWD", env);
+	if (is_sign)
+	{
+		write(STDERR_FILENO, current_dir, _strlen(current_dir));
+		write(STDERR_FILENO, "\n", 1);
+	}
+	free_args(args);
+	return (0);
+}
+
+int _erratoi(char *s)
+{
+        int i = 0;
+        unsigned long int result = 0;
+
+        if (*s == '+')
+                s++;
+        for (i = 0;  s[i] != '\0'; i++)
+        {
+                if (s[i] >= '0' && s[i] <= '9')
+                {
+                        result *= 10;
+                        result += (s[i] - '0');
+                        if (result > 20000000)
+                                return (-1);
+                }
+                else
+                        return (-1);
+        }
+        return (result);
 }
 
 /**
@@ -95,21 +123,26 @@ int simple_cd(char **args, list_t *env)
  */
 int simple_exit(char **args, list_t *env)
 {
-	int i, status;
+	int status = 0;
+	char *error_msg;
 	(void) env;
 
 	if (args[1] != NULL)
 	{
-		status = _atoi(args[1]);
-		if ((status < 0) || (status > 255))
-			return (EXIT_SUCCESS);
+		status = _erratoi(args[1]);
+		if (status == -1)
+		{
+			//error_msg = str_concat("Illegal number: ", args[1]);
+			//print_error(args, env, error_msg);
+			//free(error_msg);
+			free_args(args);
+			return (2);
+		}
 	}
 
-	for (i = 0; args[i] != NULL; i++)
-		free(args[i]);
-	free(args);
-	_exit(status & 0377);
-	return (EXIT_SUCCESS);
+	free_args(args);
+	exit(status);
+	return (0);
 }
 
 /**
@@ -117,12 +150,12 @@ int simple_exit(char **args, list_t *env)
  * @args: list of user input arguments
  * @env: the enviromental variables
  *
- * Return: Always returns EXIT_FAILURE
+ * Return: Always returns -1
  */
 int not_built_in(char **args, list_t *env)
 {
 	(void) args;
 	(void) env;
 
-	return (EXIT_FAILURE);
+	return (-1);
 }

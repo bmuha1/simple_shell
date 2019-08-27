@@ -19,3 +19,4 @@ void print_error(char **args, list_t *env, char *message)
 	write(STDERR_FILENO, message, _strlen(message));
 	write(STDERR_FILENO, "\n", 1);
 }
+
