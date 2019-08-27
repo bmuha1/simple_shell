@@ -1,7 +1,6 @@
 # Brent and Sudeep's Blue Shell
 
-![Image of Blue Shell]
-(https://i.imgur.com/1vMhRiL.png)
+![Image of Blue Shell](https://i.imgur.com/1vMhRiL.png)
 
 Brent and Sudeep's Blue Shell is a UNIX command interpreter. It's designed to mimic Bash.
 
@@ -85,8 +84,7 @@ $
 
 ## Flowchart
 
-![Image of Flowchart]
-(https://i.imgur.com/GUtPTTZ.jpg)
+![Image of Flowchart](https://i.imgur.com/GUtPTTZ.jpg)
 
 ## Supported Builtin Functions
 
