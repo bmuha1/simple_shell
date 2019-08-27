@@ -38,7 +38,6 @@ int simple_help(char **args, list_t *env)
  */
 int simple_history(char **args, list_t *env)
 {
-	int i;
 	char output[] = "History may be implemented in a future release.\n";
 
 	(void) env;

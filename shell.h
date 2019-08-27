@@ -43,7 +43,6 @@ void handle_sigint(int sig);
 /* see if program exists in path directories */
 void search_path(char **args, list_t *env);
 list_t *set_dir_list(list_t *env);
-void seearch_path_list(char **args, list_t *env);
 void replace_dollars(char **args, list_t *env);
 
 int execute(char **args, list_t *env);
