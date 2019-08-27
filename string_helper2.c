@@ -79,3 +79,42 @@ int _strpbrk(char *s, char accept)
 
 	return (0);
 }
+
+/**
+ * rev_string - Reverse a string
+ * @s: The string to reverse
+ */
+void rev_string(char *s)
+{
+	int i, length;
+	char tmp;
+
+	length = 0;
+	for (i = 0; s[i] != '\0'; i++)
+		length++;
+
+	for (i = 0; i < length; i++)
+	{
+		tmp = s[i];
+		s[i] = s[length - 1];
+		s[length - 1] = tmp;
+		length--;
+	}
+}
+
+/**
+ * _ntoa_rev - Convert an int to a reversed string
+ * @n: The int to convert
+ * @s: The reversed string
+ */
+void _ntoa_rev(int n, char *s)
+{
+	if (n == 0)
+	{
+		*s = '\0';
+		return;
+	}
+
+	*s = (n % 10) + '0';
+	_ntoa_rev(n / 10, ++s);
+}

@@ -3,31 +3,37 @@
 /**
  * execute - creates a new process to execute a command
  * @args: NULL terminated array of argument strings
+ * @env: The environmental variables
  *
  * Return: On success of execution 0, 1 on failure
  */
-int execute(char **args)
+int execute(char **args, list_t *env)
 {
 	pid_t child;
-	int i, status = 0;
+	int status = 0, exit_status = 0;
 
 	child = fork();
 	if (child == -1)
-		exit(98);
+		return (98);
 	else if (child == 0)
 	{
+		if (!_strpbrk(args[0], '/'))
+		{
+			print_error(args, env, "not found");
+			exit(127);
+		}
 		if (execve(args[0], args, NULL) == -1)
 		{
-			perror("Can not execute");
-			exit(EXIT_FAILURE);
+			print_error(args, env, "not found");
+			exit(127);
 		}
 	}
 	else
-		wait(&status);
+		waitpid(child, &status, 0);
 
-	for (i = 0; args[i] != NULL; i++)
-		free(args[i]);
-	free(args);
+	if (WIFEXITED(status))
+		exit_status = WEXITSTATUS(status);
 
-	return (EXIT_SUCCESS);
+	free_args(args);
+	return (exit_status);
 }
