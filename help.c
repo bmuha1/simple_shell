@@ -6,7 +6,6 @@
  */
 void which_help(char *command)
 {
-	char alias[] = "alias: Define or display aliases.\n";
 	char cd[] = "cd: Change the shell working directory.\n";
 	char env[] = "env: Display the environmental variables.\n";
 	char exit[] = "exit: Exit the shell.\n";
@@ -16,11 +15,7 @@ void which_help(char *command)
 	char no_match[] = ": no help topics match '";
 	char no_match2[] = "'. Try 'help help'.\n";
 
-	if (_strcmp("alias", command) == 0)
-	{
-		write(STDOUT_FILENO, alias, _strlen(alias));
-	}
-	else if (_strcmp("cd", command) == 0)
+	if (_strcmp("cd", command) == 0)
 		write(STDOUT_FILENO, cd, _strlen(cd));
 	else if (_strcmp("env", command) == 0)
 		write(STDOUT_FILENO, env, _strlen(env));
