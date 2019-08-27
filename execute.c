@@ -10,7 +10,7 @@
 int execute(char **args, list_t *env)
 {
 	pid_t child;
-	int i, status = 0, exit_status = 0;
+	int status = 0, exit_status = 0;
 
 	child = fork();
 	if (child == -1)
@@ -34,9 +34,6 @@ int execute(char **args, list_t *env)
 	if (WIFEXITED(status))
 		exit_status = WEXITSTATUS(status);
 
-	for (i = 0; args[i] != NULL; i++)
-		free(args[i]);
-	free(args);
-
+	free_args(args);
 	return (exit_status);
 }
