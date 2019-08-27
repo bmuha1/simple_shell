@@ -60,3 +60,14 @@ int _cmpstrandlen(char *s1, char *s2)
 	else
 		return (1);
 }
+
+/**
+ * _ntoa - convert an int to a string
+ * @n: int to convert
+ * @s: the string
+ */
+void _ntoa(int n, char *s)
+{
+	_ntoa_rev(n, s);
+	rev_string(s);
+}

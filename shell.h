@@ -61,6 +61,7 @@ int _strpbrk(char *s, char accept);
 void _ntoa_rev(int n, char *s);
 void rev_string(char *s);
 int _cmpstrandlen(char *s1, char *s2);
+void _ntoa(int n, char *s);
 
 /**
  * struct cmd_s - used to identify a built-in to execute

@@ -31,8 +31,6 @@ int simple_env(char **args, list_t *env)
  */
 int simple_unsetenv(char **args, list_t *env)
 {
-	int i;
-
 	if (args[1] == NULL)
 	{
 		print_error(args, env, "Please provide an argument");
@@ -53,8 +51,6 @@ int simple_unsetenv(char **args, list_t *env)
  */
 int simple_setenv(char **args, list_t *env)
 {
-	int i;
-
 	if (args[1] == NULL || args[2] == NULL)
 	{
 		print_error(args, env, "Please provide arguments");

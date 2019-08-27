@@ -7,7 +7,7 @@
  *
  * Return: On success returns 0, on failure provides error number
  */
-int main(int ac, char **av)
+int main(__attribute__((__unused__)) int ac, char **av)
 {
 	size_t len = 0;
 	ssize_t read = 0;
@@ -17,7 +17,6 @@ int main(int ac, char **av)
 	char **args = NULL;
 	list_t *env = set_env_list();
 
-	(void) ac;
 	_setenv("argv", av[0], &env);
 	signal(SIGINT, handle_sigint);
 	while (read != -1)
@@ -27,8 +26,7 @@ int main(int ac, char **av)
 		read = getline(&line, &len, stdin);
 		if (read != -1)
 		{
-			_ntoa_rev(++count, count_string);
-			rev_string(count_string);
+			_ntoa(++count, count_string);
 			_setenv("count", count_string, &env);
 			remove_comments(line);
 			if (only_delims(line))
@@ -38,18 +36,14 @@ int main(int ac, char **av)
 			if (_cmpstrandlen(args[0], "exit") == 0)
 				free(line);
 			last_status = get_built_in(args[0])(args, env);
-
-			_ntoa_rev(last_status, status_string);
-			rev_string(status_string);
+			_ntoa(last_status, status_string);
 			_setenv("last_status", status_string, &env);
-
 			if (last_status == 0 || last_status == 2)
 				continue;
 			if (!_strpbrk(args[0], '/'))
 				search_path(args, env);
 			last_status = execute(args, env);
-			_ntoa_rev(last_status, status_string);
-			rev_string(status_string);
+			_ntoa(last_status, status_string);
 			_setenv("last_status", status_string, &env);
 		}
 	}
@@ -64,7 +58,7 @@ int main(int ac, char **av)
 void handle_sigint(int sig)
 {
 	(void) sig;
-	write(STDOUT_FILENO, "\n<^^^> ", 10);
+	write(STDOUT_FILENO, "\n<^^^> ", 7);
 }
 
 /**

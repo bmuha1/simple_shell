@@ -19,9 +19,9 @@ void free_args(char **args)
  */
 void free_list(list_t *h)
 {
-        if (h == NULL)
-                return;
-        free_list(h->next);
-        free(h->var);
+	if (h == NULL)
+		return;
+	free_list(h->next);
+	free(h->var);
 	free(h);
 }
