@@ -25,12 +25,14 @@ int main(int ac, char **av)
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "#cisfun$ ", 9);
 		read = getline(&line, &len, stdin);
-		if (read != -1 && !only_delims(line))
+		if (read != -1)
 		{
 			_ntoa_rev(++count, count_string);
 			rev_string(count_string);
 			_setenv("count", count_string, &env);
 			remove_comments(line);
+			if (only_delims(line))
+				continue;
 			args = strtow(line, " \t\r\n\v\f");
 			replace_dollars(args, env);
 			if (_strcmp(args[0], "exit") == 0 &&
@@ -42,7 +44,7 @@ int main(int ac, char **av)
 			last_status = get_built_in(args[0])(args, env);
 			if (last_status == 0 || last_status == 2)
 				continue;
-			search_path(args, env);
+			search_path_list(args, env);
 			last_status = execute(args, env);
 		}
 	}

@@ -32,7 +32,9 @@ char *_getenv(char *name, list_t *h);
 char *_getenv_value(char *name, list_t *h);
 void _unsetenv(char *name, list_t **head);
 void _setenv(char *name, char *value, list_t **head);
+
 void free_list(list_t *h);
+void free_args(char **args);
 
 void remove_comments(char *line);
 int only_delims(char *line);
@@ -40,6 +42,8 @@ void handle_sigint(int sig);
 
 /* see if program exists in path directories */
 void search_path(char **args, list_t *env);
+list_t *set_dir_list(list_t *env);
+void seearch_path_list(char **args, list_t *env);
 void replace_dollars(char **args, list_t *env);
 
 int execute(char **args, list_t *env);
