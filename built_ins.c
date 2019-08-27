@@ -91,28 +91,6 @@ int simple_cd(char **args, list_t *env)
 	return (0);
 }
 
-int _erratoi(char *s)
-{
-        int i = 0;
-        unsigned long int result = 0;
-
-        if (*s == '+')
-                s++;
-        for (i = 0;  s[i] != '\0'; i++)
-        {
-                if (s[i] >= '0' && s[i] <= '9')
-                {
-                        result *= 10;
-                        result += (s[i] - '0');
-                        if (result > 20000000)
-                                return (-1);
-                }
-                else
-                        return (-1);
-        }
-        return (result);
-}
-
 /**
  * simple_exit - cause a termination of simple shell
  * @args: list of user input arguments
@@ -122,24 +100,11 @@ int _erratoi(char *s)
  */
 int simple_exit(char **args, list_t *env)
 {
-	int status = 0;
+	int status = atoi(_getenv_value("last_status", env));
 	char *error_msg;
-	(void) env;
-
-	if (args[1] != NULL)
-	{
-		status = _erratoi(args[1]);
-		if (status == -1)
-		{
-			//error_msg = str_concat("Illegal number: ", args[1]);
-			//print_error(args, env, error_msg);
-			//free(error_msg);
-			free_args(args);
-			return (2);
-		}
-	}
 
 	free_args(args);
+	free_list(env);
 	exit(status);
 	return (0);
 }
