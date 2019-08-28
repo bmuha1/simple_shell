@@ -1,32 +1,13 @@
 #include "shell.h"
 
 /**
- * print_list - print stuff
- * @h: ahahah
- *
- * Return: hahah
- */
-size_t print_list(const list_t *h)
-{
-	int len = 0;
-
-	for (len = 0; h != NULL; ++len)
-	{
-		write(STDOUT_FILENO, h->var, _strlen(h->var));
-		write(STDOUT_FILENO, "\n", 1);
-		h = h->next;
-	}
-	return (0);
-}
-
-/**
  * main - provides a prompt to be interpreted by the shell
  * @ac: number of items in av
  * @av: NULL terminated array of strings representing inputted arguments
  *
  * Return: On success returns 0, on failure provides error number
  */
-int main(void)
+int main(__attribute__((__unused__)) int ac, char **av)
 {
 	size_t len = 0;
 	ssize_t read = 0;
@@ -36,6 +17,7 @@ int main(void)
 	char **args = NULL;
 	list_t *env = set_env_list();
 
+	_setenv("argv", av[0], &env);
 	signal(SIGINT, handle_sigint);
 	while (read != EOF)
 	{
@@ -45,24 +27,24 @@ int main(void)
 		if (read != EOF)
 		{
 			_ntoa(++count, count_string);
+			_setenv("count", count_string, &env);
 			remove_comments(line);
 			if (only_delims(line))
 				continue;
 			args = strtow(line, " \t\r\n\v\f");
 			replace_dollars(args, env);
-			if (_cmpstrandlen(args[0], "env") == 0)
-			{
-				print_list(env), free_args(args);
-				continue;
-			}
+			if (_cmpstrandlen(args[0], "exit") == 0)
+				free(line);
 			last_status = get_built_in(args[0])(args, env);
 			_ntoa(last_status, status_string);
+			_setenv("last_status", status_string, &env);
 			if (last_status == 0 || last_status == 2)
 				continue;
 			if (!_strpbrk(args[0], '/'))
 				search_path(args, env);
 			last_status = execute(args, env);
 			_ntoa(last_status, status_string);
+			_setenv("last_status", status_string, &env);
 		}
 	}
 	free(line), free_list(env);

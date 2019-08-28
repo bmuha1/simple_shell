@@ -100,9 +100,11 @@ int simple_cd(char **args, list_t *env)
  */
 int simple_exit(char **args, list_t *env)
 {
+	int status = _atoi(_getenv_value("last_status", env));
+
 	free_args(args);
 	free_list(env);
-	exit(0);
+	exit(status);
 	return (0);
 }
 
