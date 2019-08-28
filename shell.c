@@ -1,16 +1,22 @@
 #include "shell.h"
 
+/**
+ * print_list - hahahaha
+ * @h: ha
+ *
+ * Return: hohoho
+ */
 size_t print_list(const list_t *h)
 {
-        int len = 0;
+	int len = 0;
 
-        for (len = 0; h != NULL; ++len)
-        {
-                write(STDOUT_FILENO, h->var, _strlen(h->var));
-                write(STDOUT_FILENO, "\n", 1);
-                h = h->next;
-        }
-        return (0);
+	for (len = 0; h != NULL; ++len)
+	{
+		write(STDOUT_FILENO, h->var, _strlen(h->var));
+		write(STDOUT_FILENO, "\n", 1);
+		h = h->next;
+	}
+	return (0);
 }
 
 /**
@@ -45,14 +51,9 @@ int main(__attribute__((__unused__)) int ac, char **av)
 				continue;
 			args = strtow(line, " \t\r\n\v\f");
 			replace_dollars(args, env);
-			if (_cmpstrandlen(args[0], "exit") == 0)
-				free(line);
 			if (_cmpstrandlen(args[0], "env") == 0)
-			{
-				print_list(env);
-				free_args(args);
-				continue;
-			}
+			{ print_list(env), free_args(args);
+				continue; }
 			last_status = get_built_in(args[0])(args, env);
 			_ntoa(last_status, status_string);
 			_setenv("last_status", status_string, &env);
