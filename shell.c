@@ -17,8 +17,7 @@ int main(__attribute__((__unused__)) int ac, char **av)
 	char **args = NULL;
 	list_t *env = set_env_list();
 
-	_setenv("argv", av[0], &env);
-	signal(SIGINT, handle_sigint);
+	_setenv("argv", av[0], &env), signal(SIGINT, handle_sigint);
 	while (read != -1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -34,7 +33,8 @@ int main(__attribute__((__unused__)) int ac, char **av)
 			args = strtow(line, " \t\r\n\v\f");
 			replace_dollars(args, env);
 			if (_cmpstrandlen(args[0], "exit") == 0)
-				free(line);
+			{free_args(args), free_list(env), free(line);
+				exit(last_status); }
 			last_status = get_built_in(args[0])(args, env);
 			_ntoa(last_status, status_string);
 			_setenv("last_status", status_string, &env);
