@@ -104,8 +104,8 @@ int simple_exit(char **args, list_t *env)
 
 	free_args(args);
 	free_list(env);
-	exit(0);
-	return (status);
+	exit(status);
+	return (0);
 }
 
 /**
