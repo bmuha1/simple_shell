@@ -33,8 +33,7 @@ int main(__attribute__((__unused__)) int ac, char **av)
 			args = strtow(line, " \t\r\n\v\f");
 			replace_dollars(args, env);
 			if (_cmpstrandlen(args[0], "exit") == 0)
-			{free_args(args), free_list(env), free(line);
-				exit(last_status); }
+				free(line), simple_exit(args, env);
 			last_status = get_built_in(args[0])(args, env);
 			_ntoa(last_status, status_string);
 			_setenv("last_status", status_string, &env);
