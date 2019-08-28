@@ -4,10 +4,11 @@
  * simple_help - Display helpful information about builtin commands
  * @args: The list of user input arguments
  * @env: The environmental variables
+ * @status: The status struct
  *
  * Return: On successful execution 0, on failure a status value
  */
-int simple_help(char **args, list_t *env)
+int simple_help(char **args, list_t *env, status_t *status)
 {
 	char output[] = "These shell commands are defined internally.  Type ";
 	char output2[] = "`help' to see this list.\nType `help name' to find ";
@@ -15,6 +16,7 @@ int simple_help(char **args, list_t *env)
 	char output4[] = "alias\ncd\nenv\nexit\nhelp\nsetenv\nunsetenv\n";
 
 	(void) env;
+	(void) status;
 	if (args[1] == NULL)
 	{
 		write(STDOUT_FILENO, output, _strlen(output));
@@ -33,14 +35,16 @@ int simple_help(char **args, list_t *env)
  * simple_history - Display the history list
  * @args: The list of user input arguments
  * @env: The environmental variables
+ * @status: The status struct
  *
  * Return: On successful execution 0, on failure a status value
  */
-int simple_history(char **args, list_t *env)
+int simple_history(char **args, list_t *env, status_t *status)
 {
 	char output[] = "History may be implemented in a future release.\n";
 
 	(void) env;
+	(void) status;
 	write(STDOUT_FILENO, output, _strlen(output));
 	free_args(args);
 
@@ -51,10 +55,11 @@ int simple_history(char **args, list_t *env)
  * simple_cd - changes current directory
  * @args: list of user input arguments
  * @env: the enviromental variables
+ * @status: The status struct
  *
  * Return: On successful execution 0, on failure a status value
  */
-int simple_cd(char **args, list_t *env)
+int simple_cd(char **args, list_t *env, status_t *status)
 {
 	int exec_stat, is_sign = 0;
 	char *input_dir = args[1];
@@ -72,7 +77,7 @@ int simple_cd(char **args, list_t *env)
 	if (exec_stat != 0)
 	{
 		error_msg = str_concat("can't cd to ", input_dir);
-		print_error(args, env, error_msg);
+		print_error(args, env, error_msg, status);
 		free(error_msg);
 		free_args(args);
 		return (2);
@@ -95,16 +100,18 @@ int simple_cd(char **args, list_t *env)
  * simple_exit - cause a termination of simple shell
  * @args: list of user input arguments
  * @env: the enviromental variables
+ * @status: The status struct
  *
  * Return: On successful execution 0, on failure a status value
  */
-int simple_exit(char **args, list_t *env)
+int simple_exit(char **args, list_t *env, status_t *status)
 {
-	int status = atoi(_getenv_value("last_status", env));
+	int last_status = status->last_status;
 
 	free_args(args);
 	free_list(env);
-	exit(status);
+	free_status(status);
+	exit(last_status);
 	return (0);
 }
 
@@ -112,13 +119,15 @@ int simple_exit(char **args, list_t *env)
  * not_built_in - handles the case if inputted command isn't a built-in
  * @args: list of user input arguments
  * @env: the enviromental variables
+ * @status: The status struct
  *
  * Return: Always returns -1
  */
-int not_built_in(char **args, list_t *env)
+int not_built_in(char **args, list_t *env, status_t *status)
 {
 	(void) args;
 	(void) env;
+	(void) status;
 
 	return (-1);
 }

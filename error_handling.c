@@ -5,14 +5,17 @@
  * @args: NULL terminated array of argument strings
  * @env: The environmental variables
  * @message: The error message
+ * @status: The status struct
  */
-void print_error(char **args, list_t *env, char *message)
+void print_error(char **args, list_t *env, char *message, status_t *status)
 {
-	write(STDERR_FILENO, _getenv_value("argv", env),
-	      _strlen(_getenv_value("argv", env)));
+	char count[12] = "";
+
+	(void) env;
+	_ntoa(status->count, count);
+	write(STDERR_FILENO, status->argv, _strlen(status->argv));
 	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, _getenv_value("count", env),
-	      _strlen(_getenv_value("count", env)));
+	write(STDERR_FILENO, count, _strlen(count));
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, args[0], _strlen(args[0]));
 	write(STDERR_FILENO, ": ", 2);

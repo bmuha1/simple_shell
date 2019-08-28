@@ -13,6 +13,19 @@
 
 extern char **environ;
 /**
+ * struct status_s - Struct that contains the last status, count, and argv[0]
+ * @last_status: The exit status of the previous command
+ * @count: The line number for the shell
+ * @argv: The name of the programm used to run the shell
+ */
+typedef struct status_s
+{
+	int last_status;
+	unsigned int count;
+	char *argv;
+} status_t;
+
+/**
  * struct list_s - linked list that hold a name with value per node
  * @var: variable in the notation "name=value"
  * @next: points to the next node
@@ -22,6 +35,11 @@ typedef struct list_s
 	char *var;
 	struct list_s *next;
 } list_t;
+void init_status(struct status_s *status, int last_status, unsigned int count,
+		 char *argv);
+status_t *new_status(int last_status, unsigned int count, char *argv);
+void free_status(status_t *status);
+
 list_t *set_env_list(void);
 size_t print_list(const list_t *h);
 list_t *add_node_end(list_t **head, char *var);
@@ -43,10 +61,10 @@ void handle_sigint(int sig);
 /* see if program exists in path directories */
 void search_path(char **args, list_t *env);
 list_t *set_dir_list(list_t *env);
-void replace_dollars(char **args, list_t *env);
+void replace_dollars(char **args, list_t *env, status_t *status);
 
-int execute(char **args, list_t *env);
-void print_error(char **args, list_t *env, char *message);
+int execute(char **args, list_t *env, status_t *status);
+void print_error(char **args, list_t *env, char *message, status_t *status);
 
 char **strtow(char *str, char *delim);
 int count_words(char *str, char *delim);
@@ -71,17 +89,17 @@ void _ntoa(int n, char *s);
 typedef struct cmd_s
 {
 	char *type;
-	int (*exec_built_in)(char **args, list_t *env);
+	int (*exec_built_in)(char **args, list_t *env, status_t *status);
 } cmd_t;
-int (*get_built_in(char *cmd))(char **args, list_t *env);
-int simple_exit(char **args, list_t *env);
-int simple_env(char **args, list_t *env);
-int simple_unsetenv(char **args, list_t *env);
-int simple_setenv(char **args, list_t *env);
-int simple_history(char **args, list_t *env);
-int simple_help(char **args, list_t *env);
+int (*get_built_in(char *cmd))(char **args, list_t *env, status_t *status);
+int simple_exit(char **args, list_t *env, status_t *status);
+int simple_env(char **args, list_t *env, status_t *status);
+int simple_unsetenv(char **args, list_t *env, status_t *status);
+int simple_setenv(char **args, list_t *env, status_t *status);
+int simple_history(char **args, list_t *env, status_t *status);
+int simple_help(char **args, list_t *env, status_t *status);
 void which_help(char *command);
-int simple_cd(char **args, list_t *env);
-int not_built_in(char **args, list_t *env);
+int simple_cd(char **args, list_t *env, status_t *status);
+int not_built_in(char **args, list_t *env, status_t *status);
 
 #endif /* SHELL_H */

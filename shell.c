@@ -11,13 +11,13 @@ int main(__attribute__((__unused__)) int ac, char **av)
 {
 	size_t len = 0;
 	ssize_t read = 0;
-	int count = 0, last_status = 0;
-	char count_string[12] = "", status_string[12] = "";
 	char *line = NULL;
 	char **args = NULL;
 	list_t *env = set_env_list();
+	int last_status;
+	status_t *status;
 
-	_setenv("argv", av[0], &env);
+	status = new_status(0, 0, av[0]);
 	signal(SIGINT, handle_sigint);
 	while (read != EOF)
 	{
@@ -26,28 +26,26 @@ int main(__attribute__((__unused__)) int ac, char **av)
 		read = getline(&line, &len, stdin);
 		if (read != EOF)
 		{
-			_ntoa(++count, count_string);
-			_setenv("count", count_string, &env);
+			status->count++;
 			remove_comments(line);
 			if (only_delims(line))
 				continue;
 			args = strtow(line, " \t\r\n\v\f");
-			replace_dollars(args, env);
+			replace_dollars(args, env, status);
 			if (_cmpstrandlen(args[0], "exit") == 0)
 				free(line);
-			last_status = get_built_in(args[0])(args, env);
-			_ntoa(last_status, status_string);
-			_setenv("last_status", status_string, &env);
-			if (last_status == 0 || last_status == 2)
+			status->last_status =
+				get_built_in(args[0])(args, env, status);
+			if (status->last_status == 0 ||
+			    status->last_status == 2)
 				continue;
 			if (!_strpbrk(args[0], '/'))
 				search_path(args, env);
-			last_status = execute(args, env);
-			_ntoa(last_status, status_string);
-			_setenv("last_status", status_string, &env);
+			status->last_status = execute(args, env, status);
 		}
 	}
-	free(line), free_list(env);
+	last_status = status->last_status;
+	free(line), free_list(env), free_status(status);
 	return (last_status);
 }
 

@@ -4,11 +4,12 @@
  * replace_dollars - Replace $$, $?, and $ variable replacement
  * @args: The arguments
  * @env: The environment variables
+ * @status: The status struct
  */
-void replace_dollars(char **args, list_t *env)
+void replace_dollars(char **args, list_t *env, status_t *status)
 {
 	int i, pid;
-	char pid_string[12] = "";
+	char pid_string[12] = "", tmp2[12] = "";
 	char *tmp = NULL;
 
 	for (i = 0; i < 12; i++)
@@ -28,10 +29,11 @@ void replace_dollars(char **args, list_t *env)
 			else if (args[i][1] == '?')
 			{
 				free(args[i]);
-				tmp = _getenv_value("last_status", env);
-				if (tmp[0] == '\0')
-					tmp = "0";
-				args[i] = _strdup(tmp);
+				/* tmp = _getenv_value("last_status", env); */
+				_ntoa(status->last_status, tmp2);
+				if (tmp2[0] == '\0')
+					tmp2[0] = '0';
+				args[i] = _strdup(tmp2);
 			}
 			else
 			{
