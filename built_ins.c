@@ -62,7 +62,7 @@ int simple_cd(char **args, list_t *env)
 	char *error_msg;
 	char buff[4096]; /* PATH_MAX = 4096 */
 
-	if (input_dir == NULL)
+	if (input_dir == NULL || _cmpstrandlen(input_dir, "~") == 0)
 		exec_stat = chdir(_getenv_value("HOME", env));
 	else if (_cmpstrandlen(input_dir, "-") == 0)
 		exec_stat = chdir(_getenv_value("OLDPWD", env)), is_sign = 1;
