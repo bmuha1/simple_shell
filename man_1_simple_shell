@@ -1,38 +1,101 @@
-.TH SHELL(1) "24 August 2019" "0.01" "Simple Shell Man Page"
+.TH SHELL(1) "24 August 2019" "0.01" "Blue Shell Man Page"
 .SH NAME
-.B Simple Shell
+.B Blue Shell
 - simplified command line interpreter
 .SH SYNOPSIS
 .B ./hsh
 .SH DESCRIPTION
-A prompt that interprets a line input as potential command arguments
-and executes them accordingly. Lines can be read interactively
-(standard input) or non-interactively (piping with a file).
-.SH BUILTIN COMMAND FUNCTIONS
+A command interpreter that reads a line input as potential
+command arguments to be executed accordingly.
+Lines can be read interactively
+(standard input) or non-interactively (piping a file). Designed to mimic Bash, but does
+not handle particular bash features such as options.
+.SH ARGUMENTS
+The first argument from input is assumed to be an executable command file
+followed by parameters taken by that command.
+.B hsh
+will then interpret this command, execute it, and then exit. The exit status
+returned is the status of the previous command executed (status is 0 on
+non-execution).
+.SH INTERACTIVE MODE EXAMPLE
+.PP
+$ ./hsh
+<^^^> /bin/ls
+hsh main.c shell.c
+<^^^> exit
+.PP
+$
+.SH NON-INTERACTIVE MODE EXAMPLE
+
+.SH PARAMETERS AND EXPANSION
+
+.SH BUILTIN COMMANDS
 Commands that are called and handled directly in the shell and thus do not need
-to call upon a child process to be executed.
+to call upon a child process to be executed. With the execption of the exit
+command, builtin commands return an exit status of
+0 on successful execution and 2 on failure.
 .PP
 .PP
 .B exit
 .PP
-Terminates the shell with a default status of 0. Status can be specified given
-a status parameter number between 0 and 255.
-.PP
-.PP
-.I Example:
-exit 98
+- terminates the shell returning a exit status of the previous command attempted
+to be executed
 .PP
 .PP
 .B env
 .PP
-Prints the enviromental variables and their values in the notation "name=value"
+- prints the enviromental variables and their values in the notation "name=value"
 .PP
+.PP
+.B setenv
+[var_name] [value]
+.PP
+- creates or modifies an enviromental variable (depending on existence)
+.PP
+.RS
+Example -> setenv FRUIT orange
+.RE
 .PP
 .B unsetenv
+[var_name]
+.PP
+- removes an enviromental variable (if it exists)
+.PP
+.RS
+Example -> unsetenv FRUIT
+.RE
+.PP
+.B cd
+[existing_directory]
+.PP
+- change to an existing directory
+.PP
+.RS
+Example -> cd (changes to directory stored in $HOME)
+.RE
+.RS
+Example -> cd /bin (changes to /bin directory)
+.RE
+.RS
+Example -> cd - (changes to previous directory found in $OLDPWD)
+.RE
+.PP
+.B help
+[builtin]
+.PP
+- display useful information to understand the builtin commands
+.PP
+.RS
+Example -> help cd
+.RE
+.PP
+.B history
+.PP
+- currently still being implemented
 .SH SEE ALSO
-.I bash
+.I bash(1)
 .SH BUGS
 No known bugs.
-Report bugs to ...
+Report bugs to authors mentioned below.
 .SH AUTHOR
 Brent Muha, Sudeep Raj
