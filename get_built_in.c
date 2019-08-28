@@ -6,7 +6,7 @@
  *
  * Return: Built-in function to execute
  */
-int (*get_built_in(char *cmd))(char **args, list_t *env)
+int (*get_built_in(char *cmd))(char **args, list_t *env, status_t *status)
 {
 	int i;
 	cmd_t command[] = {
