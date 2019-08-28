@@ -19,12 +19,12 @@ int main(__attribute__((__unused__)) int ac, char **av)
 
 	_setenv("argv", av[0], &env);
 	signal(SIGINT, handle_sigint);
-	while (read != -1)
+	while (read != EOF)
 	{
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "<^^^> ", 6);
 		read = getline(&line, &len, stdin);
-		if (read != -1)
+		if (read != EOF)
 		{
 			_ntoa(++count, count_string);
 			_setenv("count", count_string, &env);
