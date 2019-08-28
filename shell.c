@@ -30,7 +30,7 @@ int main(__attribute__((__unused__)) int ac, char **av)
 {
 	size_t len = 0;
 	ssize_t read = 0;
-	int count = 0, last_status = 0, i = 0;
+	int count = 0, last_status = 0;
 	char count_string[12] = "", status_string[12] = "";
 	char *line = NULL;
 	char **args = NULL;
