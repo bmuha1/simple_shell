@@ -1,0 +1,38 @@
+.TH SHELL(1) "24 August 2019" "0.01" "Simple Shell Man Page"
+.SH NAME
+.B Simple Shell
+- simplified command line interpreter
+.SH SYNOPSIS
+.B ./hsh
+.SH DESCRIPTION
+A prompt that interprets a line input as potential command arguments
+and executes them accordingly. Lines can be read interactively
+(standard input) or non-interactively (piping with a file).
+.SH BUILTIN COMMAND FUNCTIONS
+Commands that are called and handled directly in the shell and thus do not need
+to call upon a child process to be executed.
+.PP
+.PP
+.B exit
+.PP
+Terminates the shell with a default status of 0. Status can be specified given
+a status parameter number between 0 and 255.
+.PP
+.PP
+.I Example:
+exit 98
+.PP
+.PP
+.B env
+.PP
+Prints the enviromental variables and their values in the notation "name=value"
+.PP
+.PP
+.B unsetenv
+.SH SEE ALSO
+.I bash
+.SH BUGS
+No known bugs.
+Report bugs to ...
+.SH AUTHOR
+Brent Muha, Sudeep Raj
