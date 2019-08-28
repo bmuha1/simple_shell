@@ -1,5 +1,18 @@
 #include "shell.h"
 
+size_t print_list(const list_t *h)
+{
+        int len = 0;
+
+        for (len = 0; h != NULL; ++len)
+        {
+                write(STDOUT_FILENO, h->var, _strlen(h->var));
+                write(STDOUT_FILENO, "\n", 1);
+                h = h->next;
+        }
+        return (0);
+}
+
 /**
  * main - provides a prompt to be interpreted by the shell
  * @ac: number of items in av
@@ -11,7 +24,7 @@ int main(__attribute__((__unused__)) int ac, char **av)
 {
 	size_t len = 0;
 	ssize_t read = 0;
-	int count = 0, last_status = 0;
+	int count = 0, last_status = 0, i = 0;
 	char count_string[12] = "", status_string[12] = "";
 	char *line = NULL;
 	char **args = NULL;
@@ -33,7 +46,13 @@ int main(__attribute__((__unused__)) int ac, char **av)
 			args = strtow(line, " \t\r\n\v\f");
 			replace_dollars(args, env);
 			if (_cmpstrandlen(args[0], "exit") == 0)
-				free(line), simple_exit(args, env);
+				free(line);
+			if (_cmpstrandlen(args[0], "env") == 0)
+			{
+				print_list(env);
+				free_args(args);
+				continue;
+			}
 			last_status = get_built_in(args[0])(args, env);
 			_ntoa(last_status, status_string);
 			_setenv("last_status", status_string, &env);
