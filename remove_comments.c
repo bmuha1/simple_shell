@@ -12,8 +12,16 @@ void remove_comments(char *line)
 	{
 		if (line[i] == '#')
 		{
-			line[i] = '\0';
-			break;
+			if (i == 0)
+			{
+				line[i] = '\0';
+				break;
+			}
+			else if (_strchr(" \t\r\n\v\f", line[i - 1]) != '\0')
+			{
+				line[i] = '\0';
+				break;
+			}
 		}
 	}
 }
