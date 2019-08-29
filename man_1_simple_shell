@@ -1,7 +1,7 @@
 .TH SHELL(1) "24 August 2019" "0.01" "Blue Shell Man Page"
 .SH NAME
 .B Blue Shell
-- simplified command line interpreter
+-simplified command line interpreter
 .SH SYNOPSIS
 .B ./hsh
 .SH DESCRIPTION
