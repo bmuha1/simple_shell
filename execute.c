@@ -16,7 +16,6 @@ int execute(char **args, list_t *env, status_t *status)
 	child = fork();
 	if (child == -1)
 	{
-		print_error(args, env, "Fork failed", status);
 		return (1);
 	}
 	else if (child == 0)
