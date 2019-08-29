@@ -19,16 +19,48 @@ returned is the status of the previous command executed (status is 0 on
 non-execution).
 .SH INTERACTIVE MODE EXAMPLE
 .PP
+.PP
 $ ./hsh
+.PP
 <^^^> /bin/ls
+.PP
 hsh main.c shell.c
+.PP
 <^^^> exit
 .PP
 $
+.PP
+.PP
 .SH NON-INTERACTIVE MODE EXAMPLE
-
-.SH PARAMETERS AND EXPANSION
-
+.PP
+.PP
+$ echo "/bin/ls" | ./hsh
+.PP
+.PP
+hsh main.c shell.c test_ls_2
+.SH ENIVRONMENT
+When Blue Shell is invoked, it is given a list of strings called the enviroment.
+These strings are known as enviromental variables and are represented in the form
+.B name=value
+.
+.SH COMMENTS
+Words/characters from the line input following a
+.B #
+will be ignored.
+.SH VARIABLES
+Add the
+.B $
+to a variable name expands to the value of the variable
+.PP
+.RS
+Example -> Given an enviromental variable PWD="/home": echo $PWD returns /home
+.RE
+.PP
+.B $$
+expands to the proccess ID of the current process
+.PP
+.B $?
+expands to the return value of the last command executed
 .SH BUILTIN COMMANDS
 Commands that are called and handled directly in the shell and thus do not need
 to call upon a child process to be executed. With the execption of the exit
@@ -89,9 +121,6 @@ Example -> cd - (changes to previous directory found in $OLDPWD)
 Example -> help cd
 .RE
 .PP
-.B history
-.PP
-- currently still being implemented
 .SH SEE ALSO
 .I bash(1)
 .SH BUGS
